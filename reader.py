@@ -5,11 +5,22 @@ from math import sqrt
 
 class PhillipsData:
     def __init__(self, params, data):
+        """
+        Creates a PhillipsData object from experiment parameters and data points.
+        :param params: SPAR file data, converted to a dictionary.
+        :param data: SDAT file data, converted to a 2D array of imaginary numbers.
+        """
         self.params = params
         self.data = data
 
     @classmethod
     def from_file_pair(cls, spar_file, sdat_file):
+        """
+        Creates a data object directly from data source files.
+        :param spar_file: String path to the SPAR file.
+        :param sdat_file: String path to the SDAT file.
+        :return: PhillipsData object.
+        """
         spar_params = read_spar(spar_file)
         data = read_sdat(sdat_file,
                          spar_params['samples'],
@@ -18,12 +29,24 @@ class PhillipsData:
         return cls(spar_params, data)
 
     def get_real(self):
+        """
+        Returns only the real parts of the imaginary numbers in the data.
+        :return: 2D array of real numbers.
+        """
         return [x.real for x in self.data]
 
     def get_imaginary(self):
+        """
+        Returns only the imaginary parts of the imaginary numbers in the data.
+        :return: 2D array of imaginary numbers.
+        """
         return [x.imag for x in self.data]
 
     def get_absolute(self):
+        """
+        Returns the (computed) absolutes of the imaginary numbers in the data.
+        :return: 2D array of computed absolute numbers.
+        """
         return [sqrt(x.real ^ 2 + x.imag ^ 2) for x in self.data]
 
 
