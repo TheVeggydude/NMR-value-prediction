@@ -6,7 +6,7 @@ import scipy.fft
 experiment = reader.PhillipsData.from_file_pair('Data/batch_2_clean/set_3A/n8951_5_1_raw_act.SPAR',
                                                 'Data/batch_2_clean/set_3A/n8951_5_1_raw_act.SDAT')
 
-pulse_1 = experiment.data[0, :500]
+pulse_1 = experiment.data[0, :512]
 
 # Plot the pulse data.
 plt.plot(pulse_1.real)
@@ -32,4 +32,12 @@ plt.plot(np.abs(fft_real))
 
 plt.title('Fourier transform')
 plt.legend(['rfft of real', 'abs rfft of real'])
+plt.show()
+
+fft_complete = scipy.fft.fft(pulse_1)
+print(fft_complete[0])
+fft_complete = np.roll(fft_complete, int(len(fft_complete)/2))
+
+plt.plot(np.abs(fft_complete))
+plt.title("FFT complex values pulse_1")
 plt.show()
