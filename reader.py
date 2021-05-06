@@ -1,6 +1,5 @@
 import numpy as np
 from ast import literal_eval
-from math import sqrt
 
 
 class PhillipsData:
@@ -28,35 +27,35 @@ class PhillipsData:
 
         return cls(spar_params, data)
 
-    def get_real(self):
+    def real(self):
         """
         Returns only the real parts of the imaginary numbers in the data.
-        :return: 2D array of real numbers.
+        :return: 2D NumPy array of real numbers.
         """
-        return [x.real for x in self.data]
+        return self.data.real
 
-    def get_imaginary(self):
+    def imaginary(self):
         """
         Returns only the imaginary parts of the imaginary numbers in the data.
-        :return: 2D array of imaginary numbers.
+        :return: 2D NumPy array of imaginary numbers.
         """
-        return [x.imag for x in self.data]
+        return self.data.imag
 
-    def get_absolute(self):
+    def absolute(self):
         """
         Returns the (computed) absolutes of the imaginary numbers in the data.
-        :return: 2D array of computed absolute numbers.
+        :return: 2D NumPy array of computed absolute numbers.
         """
-        return [sqrt(x.real ^ 2 + x.imag ^ 2) for x in self.data]
+        return np.absolute(self.data)
 
 
 def read_spar(filename):
-    '''Read the .spar file.
+    """Read the .spar file.
     :param filename: file path
 
     :return: dict of parameters read from spar file
     :rtype: dict
-    '''
+    """
 
     parameter_dict = {}
     with open(filename, 'r') as f:
@@ -81,11 +80,11 @@ def read_spar(filename):
 
 
 def read_sdat(filename, samples, rows):
-    '''Read the .sdat file.
+    """Read the .sdat file.
     :param filename: File path
     :param samples: Number of spectral points
     :param rows: Number of rows of data
-    '''
+    """
     with open(filename, 'rb') as f:
         raw = f.read()
 
@@ -93,7 +92,7 @@ def read_sdat(filename, samples, rows):
     data_iter = iter(floats)
     complex_iter = (complex(r, i) for r, i in zip(data_iter, data_iter))
     raw_data = np.fromiter(complex_iter, "complex64")
-    raw_data = np.reshape(raw_data, (rows, samples)).T.squeeze()
+    raw_data = np.reshape(raw_data, (rows, samples)).squeeze()
 
     return raw_data
 
@@ -119,8 +118,8 @@ def _vax_to_ieee_single_float(data):
     This is taken from the VESPA project source code under a BSD licence.
     """
     f = []
-    nfloat = int(len(data) / 4)
-    for i in range(nfloat):
+    n_float = int(len(data) / 4)
+    for i in range(n_float):
 
         byte2 = data[0 + i * 4]
         byte1 = data[1 + i * 4]
@@ -131,19 +130,19 @@ def _vax_to_ieee_single_float(data):
         # hex 0x7f = binary mask 01111111
 
         sign = (byte1 & 0x80) >> 7
-        expon = ((byte1 & 0x7f) << 1) + ((byte2 & 0x80) >> 7)
-        fract = ((byte2 & 0x7f) << 16) + (byte3 << 8) + byte4
+        exponent = ((byte1 & 0x7f) << 1) + ((byte2 & 0x80) >> 7)
+        fracture = ((byte2 & 0x7f) << 16) + (byte3 << 8) + byte4
 
         if sign == 0:
             sign_mult = 1.0
         else:
             sign_mult = -1.0
 
-        if 0 < expon:
+        if 0 < exponent:
             # note 16777216.0 == 2^24
-            val = sign_mult * (0.5 + (fract / 16777216.0)) * pow(2.0, expon - 128.0)
+            val = sign_mult * (0.5 + (fracture / 16777216.0)) * pow(2.0, exponent - 128.0)
             f.append(val)
-        elif expon == 0 and sign == 0:
+        elif exponent == 0 and sign == 0:
             f.append(0)
         else:
             f.append(0)
