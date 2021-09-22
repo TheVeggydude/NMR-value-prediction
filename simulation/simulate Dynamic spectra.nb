@@ -1,0 +1,700 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     28106,        692]
+NotebookOptionsPosition[     26328,        655]
+NotebookOutlinePosition[     26732,        671]
+CellTagsIndexPosition[     26689,        668]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "QMRITools`"}]], "Input",
+ CellChangeTimes->{{3.8411300837429047`*^9, 3.8411300861009274`*^9}},
+ CellLabel->
+  "In[777]:=",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
+
+Cell[CellGroupData[{
+
+Cell["Functions", "Subsubsection",
+ CellChangeTimes->{{3.8411349850963955`*^9, 
+  3.8411349900427*^9}},ExpressionUUID->"7bc48866-c8e2-4111-886c-f3428c3a72a1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"dynamic", " ", "PCr", " ", "signal", " ", "function"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"MakePcr", "[", 
+     RowBox[{"start_", ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"trest_", ",", "tex_", ",", "trec_", ",", "dt_"}], "}"}], 
+        ",", 
+        RowBox[{"{", 
+         RowBox[{"pcrEx_", ",", "pcrRec_"}], "}"}]}], "}"}]}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"end", ",", "func", ",", "t"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"end", "=", 
+        RowBox[{"(", 
+         RowBox[{"start", " ", 
+          RowBox[{"Exp", "[", 
+           RowBox[{"tex", "/", 
+            RowBox[{"-", "pcrEx"}]}], "]"}]}], ")"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"func", "=", 
+        RowBox[{"Piecewise", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"start", ",", 
+             RowBox[{"0", "<=", "t", "<", "trest"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"start", " ", 
+              RowBox[{"Exp", "[", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"t", "-", "trest"}], ")"}], "/", 
+                RowBox[{"-", "pcrEx"}]}], "]"}]}], ",", 
+             RowBox[{"trest", "<=", "t", "<", 
+              RowBox[{"tex", "+", "trest"}]}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"end", "+", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"start", "-", "end"}], ")"}], 
+               RowBox[{"(", 
+                RowBox[{"1", "-", 
+                 RowBox[{"Exp", "[", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"t", "-", "trest", "-", "tex"}], ")"}], "/", 
+                   RowBox[{"-", "pcrRec"}]}], "]"}]}], ")"}]}]}], ",", 
+             RowBox[{
+              RowBox[{"tex", "+", "trest"}], "<=", "t"}]}], "}"}]}], 
+          "\[IndentingNewLine]", "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"func", "/.", 
+          RowBox[{"t", "->", "x"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", "0.", ",", 
+           RowBox[{"trest", "+", "tex", "+", "trec"}], ",", "dt"}], "}"}]}], 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"fucntion", " ", "to", " ", "simulate", " ", "spectra"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SimulateFid", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"lw_", ",", "rat_", ",", "snr_", ",", "shift_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"nsamp_", ",", "bw_", ",", "field_", ",", "nuc_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"trest_", ",", "tex_", ",", "trec_", ",", "dt_"}], "}"}], 
+        ",", 
+        RowBox[{"{", 
+         RowBox[{"pcrEx_", ",", "pcrRec_"}], "}"}]}], "}"}]}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "names", ",", "fids", ",", "specs", ",", "table", ",", "met", ",", 
+        "metNames", ",", "metAmps", ",", "dw", ",", "gyro", ",", "time", ",", 
+        "specsTS", ",", "\[IndentingNewLine]", "pcrAmpB", ",", "piinS", ",", 
+        "pcrt", ",", "piint", ",", "l", ",", "sigma", ",", "fid", ",", 
+        "fidsI"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "get", " ", "the", " ", "basis", " ", "functions", " ", "for", " ", 
+        "each"}], " ", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"pcrAmpB", "=", 
+        RowBox[{"rat", " ", "250"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"piinS", "=", "78"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pcrt", "=", 
+        RowBox[{"MakePcr", "[", 
+         RowBox[{"pcrAmpB", 
+          RowBox[{"(*", 
+           RowBox[{"start", " ", "value"}], "*)"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"trest", ",", "tex", ",", "trec", ",", "dt"}], "}"}], 
+            ",", 
+            RowBox[{"{", 
+             RowBox[{"pcrEx", ",", "pcrRec"}], "}"}]}], "}"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"piint", "=", 
+        RowBox[{"pcrAmpB", "-", "pcr", "+", "piinS"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"l", "=", 
+        RowBox[{"Length", "[", "pcrt", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"sigma", "=", 
+        RowBox[{"pcrAmpB", "/", "snr"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"dw", "=", 
+        RowBox[{"1.", "/", "bw"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"gyro", "=", 
+        RowBox[{"GetGyro", "[", 
+         RowBox[{"field", ",", "nuc"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"metNames", "=", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<PE\>\"", ",", "\"\<PC\>\"", ",", "\"\<Piex\>\"", ",", 
+          "\"\<Piin\>\"", ",", "\"\<GPE\>\"", ",", "\"\<GPC\>\"", ",", 
+          "\"\<PCr\>\"", ",", "\"\<ATP\>\"", ",", "\"\<NAD\>\"", ",", 
+          "\"\<UDPG\>\""}], "}"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"names", ",", "fidsI", ",", "specs", ",", "table"}], "}"}], 
+        "=", 
+        RowBox[{"GetSpectraBasisFunctions", "[", 
+         RowBox[{"metNames", ",", "\[IndentingNewLine]", 
+          RowBox[{"BasisSequence", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<PulseAcquire\>\"", ",", "0"}], "}"}]}], 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"sequence", " ", "and", " ", "echo", " ", "time"}], ",", 
+            " ", 
+            RowBox[{"normally", " ", "2", " ", "dwell", " ", "times"}]}], 
+           "*)"}], "\[IndentingNewLine]", ",", 
+          RowBox[{"SpectraSamples", "\[Rule]", "nsamp"}], ",", 
+          RowBox[{"SpectraBandwith", "\[Rule]", "bw"}], ",", 
+          RowBox[{"SpectraPpmShift", "\[Rule]", "0"}], ",", 
+          RowBox[{"SpectraFieldStrength", "\[Rule]", "field"}], ",", 
+          RowBox[{"SpectraNucleus", "\[Rule]", "nuc"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"time", "=", 
+        RowBox[{"GetTimeRange", "[", 
+         RowBox[{
+          RowBox[{"fidsI", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], ",", "dw"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"fidsI", "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TimeShiftFid", "[", 
+           RowBox[{"#", ",", "time", ",", "lw"}], "]"}], "&"}], "/@", 
+         "fidsI"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "actual", " ", "loop", " ", "for", " ", "dynamic", " ", 
+         "simulation"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"metAmps", "=", 
+           RowBox[{"{", 
+            RowBox[{"17", ",", "30", ",", "39", ",", 
+             RowBox[{"piint", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], ",", "0", ",", "64", ",", 
+             RowBox[{"pcrt", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], ",", "250", ",", "18", ",", 
+             "20"}], "}"}]}], ";", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"specs", "=", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"ShiftSpectra", "[", 
+              RowBox[{
+               RowBox[{"ShiftedFourier", "[", "#", "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"dw", ",", "gyro"}], "}"}], ",", 
+               RowBox[{"RandomReal", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"-", "1"}], ",", "1"}], "}"}], "shift"}], "]"}]}], 
+              "]"}], "&"}], "/@", "fidsI"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"fids", "=", 
+           RowBox[{"ShiftedInverseFourier", "[", 
+            RowBox[{"metAmps", ".", "specs"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"AddNoise", "[", 
+           RowBox[{"fids", ",", "sigma", ",", 
+            RowBox[{"NoiseType", "->", "\"\<Complex\>\""}]}], "]"}]}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "l", ",", "1"}], "}"}]}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.8411325998848705`*^9, 3.8411327148669643`*^9}, 
+   3.8411327550403976`*^9, {3.8411328087211227`*^9, 3.841132809097796*^9}, {
+   3.84113423571773*^9, 3.8411342491152325`*^9}, {3.8411349607610335`*^9, 
+   3.841134978778243*^9}},ExpressionUUID->"f21800ef-c914-456f-94bf-\
+465f1eb9616b"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Simulation", "Subsubsection",
+ CellChangeTimes->{{3.8411349942803497`*^9, 
+  3.8411349971153035`*^9}},ExpressionUUID->"f0970b76-f2c6-424e-aa67-\
+e5bd727f7a0a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"simulation", " ", "contraints"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"PCrATPratio", "=", "4"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"lineWidth", "=", "30"}], 
+    RowBox[{"(*", "Hz", "*)"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"snr", "=", "40"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"shift", "=", "0.1"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"acquisition", " ", "paramters"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"nsamp", "=", "1000"}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"number", " ", "of", " ", "spectral", " ", "samples"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{"bw", "=", "5000"}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"acquisition", " ", "bandwithd"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"field", "=", "3"}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"field", " ", "strenght", " ", "of", " ", "simulations"}], 
+     "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"nuc", "=", "\"\<31P\>\""}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"relevant", " ", "nucleius"}], "*)"}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"PCr", " ", "timings"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"trest", "=", "60"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"tex", "=", "160"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"trec", "=", "300"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"dt", "=", "2"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"PCr", " ", "half", " ", "times"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{"pcrEx", "=", "120"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"pcrRec", "=", "60"}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.841130507109733*^9, 3.8411305096531534`*^9}, {
+  3.841132830159934*^9, 3.8411328313263392`*^9}, {3.8411341833377385`*^9, 
+  3.841134228434599*^9}, {3.8411347650297194`*^9, 3.8411348171745195`*^9}, {
+  3.8411348526795473`*^9, 3.8411348697106085`*^9}},
+ CellLabel->
+  "In[1062]:=",ExpressionUUID->"161c6efb-9fc2-4362-9b4d-3f2d5d3afd06"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "plot", " ", "the", " ", "PCr", " ", "function", " ", "for", " ", 
+    "demonstration"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"pcrPlot", "=", 
+   RowBox[{"ListLinePlot", "@", 
+    RowBox[{"(", 
+     RowBox[{"MakePcr", "[", 
+      RowBox[{"1000", 
+       RowBox[{"(*", 
+        RowBox[{"start", " ", "value"}], "*)"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"trest", ",", "tex", ",", "trec", ",", "dt"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"pcrEx", ",", "pcrRec"}], "}"}]}], "}"}]}], "]"}], 
+     ")"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.8411327165305986`*^9, 3.841132744252864*^9}, {
+  3.8411327819821596`*^9, 3.841132785949294*^9}, {3.8411328672936153`*^9, 
+  3.8411328822543745`*^9}, {3.8411329130225325`*^9, 3.8411329173844285`*^9}, {
+  3.8411342507386665`*^9, 3.8411342767481604`*^9}, {3.8411349213713727`*^9, 
+  3.841134939590305*^9}},
+ CellLabel->
+  "In[1068]:=",ExpressionUUID->"cfe6b664-4767-4a5b-af78-2f7d2412a807"],
+
+Cell[BoxData[
+ GraphicsBox[{{}, {{}, {}, 
+    {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+      NCache[
+       Rational[1, 90], 0.011111111111111112`]], AbsoluteThickness[1.6], 
+     LineBox[CompressedData["
+1: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
+94b15cjduNh801D2fqnAwy/GKPUmZIECkff6N389gQwFOLeBif7TyGIFjt8J
+fa90HntfVSBzfVBHiSNZp4BrqbGX31KyXgHRt7Zl33qSWxXYrdkQ8dCf9ZVY
+/OrCxdpVrK/E+YrwieHRrK/El9aXd1XHsb4SNgaSmXcSWV+JFdld/TUprK+E
+heUCTraF9ZV43r3B7M521leixXeWiWkm6yfg4yeeNeNzWT8BfaN6L3cVsH4C
+hKc62vKLWT8BAvPe8mGHWD8BM2tVB/zKWT8BqYllPoojrJ+Aszk+U8OPs34C
+Gm53ZU+uYn0VXPd6t537hvVVcPvq1FqH71hfhTi7zZk79ayvQkCPu+jMRdZX
+4d7IhPH6etZX4bFqRWflVdZXoTw/o1tzg/VVmJ2723F8I+snwjr07JWyu6yf
+CJudupOjmlg/EahObIlqYf1ERHpN8djTxvqJqDZsvHHkCesnwlLeF13ZzvqJ
+0J4rv5bzK+snYrP9uU7RM9ZPQsePy3eZPGf9JCxWZ8pP9LB+EvLHxXg7vWT9
+JLQOUj45+jvrJ0G4zLZzeB/rJ8H2Ew9j4Z+sn4ShTje6cgZYPwnJBv4Lqzj2
+/y81bC4OTrk8mCxQ4+qfI3zqh5Chxuvb+7xrhpLFarRUDukvNiJr1ZD7mHUp
+h5N1auQ+Nvps7kiyXg3Rp9cLHxmTW9Xg6qZ67RjN+hpUZp2ymziGbKJBXYaL
+vtyUfR4NdM3ViilmZHsNLlskFO0xZ59Pg5/bzc+8tCAHaPD47ZDpfpZ5+Asn
+Umza
+      "]]}}, {{}, {}}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->{True, True},
+  AxesLabel->{None, None},
+  AxesOrigin->{0., 0},
+  DisplayFunction->Identity,
+  Frame->{{False, False}, {False, False}},
+  FrameLabel->{{None, None}, {None, None}},
+  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+  GridLines->{None, None},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  Method->{
+   "OptimizePlotMarkers" -> True, "OptimizePlotMarkers" -> True, 
+    "CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+        Identity[
+         Part[#, 1]], 
+        Identity[
+         Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+        Identity[
+         Part[#, 1]], 
+        Identity[
+         Part[#, 2]]}& )}},
+  PlotRange->{{0., 261.}, {0, 1000.}},
+  PlotRangeClipping->True,
+  PlotRangePadding->{{
+     Scaled[0.02], 
+     Scaled[0.02]}, {
+     Scaled[0.02], 
+     Scaled[0.05]}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{{3.8411327605770016`*^9, 3.8411328108988323`*^9}, {
+   3.841132863964653*^9, 3.841132882889772*^9}, 3.8411329183076277`*^9, 
+   3.8411342320755696`*^9, 3.8411342777019787`*^9, 3.8411347681921544`*^9, {
+   3.8411348550601416`*^9, 3.841134873200438*^9}, 3.8411349417202597`*^9, 
+   3.8411350020374393`*^9},
+ CellLabel->
+  "Out[1068]=",ExpressionUUID->"e2af28aa-242e-4ea3-a10c-5a8284db9867"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<pcrPlot.jpg\>\"", ",", "pcrPlot"}], "]"}]], "Input",
+ CellChangeTimes->{{3.841134942666023*^9, 3.841134952189992*^9}},
+ CellLabel->
+  "In[1061]:=",ExpressionUUID->"cbfd76a9-3b35-4fdb-8565-0c9b910a363e"],
+
+Cell[BoxData["\<\"pcrPlot.jpg\"\>"], "Output",
+ CellChangeTimes->{3.8411349532604237`*^9},
+ CellLabel->
+  "Out[1061]=",ExpressionUUID->"a2083bf4-01e4-4b79-b6ac-080a489a4efb"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"simulate", " ", "the", " ", "FID"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"simFid", "=", 
+     RowBox[{"SimulateFid", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"lineWidth", ",", "PCrATPratio", ",", "snr", ",", "shift"}], 
+        "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"nsamp", ",", "bw", ",", "field", ",", "nuc"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"trest", ",", "tex", ",", "trec", ",", "dt"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"pcrEx", ",", "pcrRec"}], "}"}]}], "}"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"convert", " ", "to", " ", "spectra"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"simSpec", "=", 
+     RowBox[{"ShiftedFourier", "/@", "simFid"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.8411333079084196`*^9, 3.841133332976756*^9}, {
+  3.8411334791521697`*^9, 3.8411335120639734`*^9}, {3.841133908676124*^9, 
+  3.8411339101745696`*^9}, {3.8411340461631227`*^9, 3.841134084084526*^9}, {
+  3.8411342940524063`*^9, 3.8411343066077785`*^9}, {3.841134391843565*^9, 
+  3.8411344056056542`*^9}},
+ CellLabel->
+  "In[1069]:=",ExpressionUUID->"dd09d2cb-d06b-495c-b7b4-d2fb78140030"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"fMax", "=", 
+   RowBox[{"Max", "[", 
+    RowBox[{"Abs", "[", "simFid", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"sMax", "=", 
+    RowBox[{"Max", "[", 
+     RowBox[{"Abs", "[", "simSpec", "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Row", "@", 
+    RowBox[{"{", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"PlotSpectra", "[", 
+       RowBox[{
+        RowBox[{"simSpec", "[", 
+         RowBox[{"[", "n", "]"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"dw", ",", "gyro"}], "}"}], ",", 
+        RowBox[{"PlotRange", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"10", ",", 
+             RowBox[{"-", "20"}]}], "}"}], ",", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "1"}], "}"}], "sMax"}]}], "}"}]}], ",", 
+        RowBox[{"ImageSize", "->", "300"}], ",", 
+        RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"PlotFid", "[", 
+       RowBox[{
+        RowBox[{"simFid", "[", 
+         RowBox[{"[", "n", "]"}], "]"}], ",", "dw", ",", 
+        RowBox[{"ImageSize", "->", "300"}], ",", 
+        RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", ",", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "1", ",", 
+     RowBox[{"Length", "[", "simFid", "]"}], ",", "1"}], "}"}]}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.8411344079556775`*^9, 3.841134476613658*^9}},
+ CellLabel->
+  "In[1055]:=",ExpressionUUID->"3c16cce1-91ea-4df5-9bc2-a552256649e5"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`n$$ = 261, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`n$$], 1, 261, 1}}, Typeset`size$$ = {
+    600., {162., 166.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`n$$ = 1}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Row[{
+         QMRITools`SpectroTools`PlotSpectra[
+          
+          Part[$CellContext`simSpec, $CellContext`n$$], {$CellContext`dw, \
+$CellContext`gyro}, PlotRange -> {{10, -20}, {-1, 1} $CellContext`sMax}, 
+          ImageSize -> 300, AspectRatio -> 1], 
+         QMRITools`SpectroTools`PlotFid[
+          Part[$CellContext`simFid, $CellContext`n$$], $CellContext`dw, 
+          ImageSize -> 300, AspectRatio -> 1]}], 
+      "Specifications" :> {{$CellContext`n$$, 1, 261, 1}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{653., {211., 216.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.8411344275647073`*^9, 3.841134477147236*^9}, 
+   3.841134775520912*^9, {3.8411348588334417`*^9, 3.8411348781001086`*^9}},
+ CellLabel->
+  "Out[1057]=",ExpressionUUID->"1f9ad5af-4568-45cb-8916-3ecf37424168"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"gif", "=", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Row", "@", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"PlotSpectra", "[", 
+         RowBox[{
+          RowBox[{"simSpec", "[", 
+           RowBox[{"[", "n", "]"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"dw", ",", "gyro"}], "}"}], ",", 
+          RowBox[{"PlotRange", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"10", ",", 
+               RowBox[{"-", "20"}]}], "}"}], ",", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"-", "1"}], ",", "1"}], "}"}], "sMax"}]}], "}"}]}], 
+          ",", 
+          RowBox[{"ImageSize", "->", "300"}], ",", 
+          RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"PlotFid", "[", 
+         RowBox[{
+          RowBox[{"simFid", "[", 
+           RowBox[{"[", "n", "]"}], "]"}], ",", "dw", ",", 
+          RowBox[{"ImageSize", "->", "300"}], ",", 
+          RowBox[{"AspectRatio", "\[Rule]", "1"}]}], "]"}]}], 
+       "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", ",", 
+     RowBox[{"{", 
+      RowBox[{"n", ",", "1", ",", 
+       RowBox[{"Length", "[", "simFid", "]"}], ",", "4"}], "}"}]}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.8411344961489553`*^9, 3.8411345047594657`*^9}, 
+   3.841134758534808*^9},
+ CellLabel->
+  "In[1058]:=",ExpressionUUID->"a9c33b44-513b-46d9-83d2-aec575e3e018"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{"\"\<dyn.gif\>\"", ",", "gif", ",", 
+    RowBox[{"AnimationRepetitions", "->", "Infinity"}], ",", 
+    RowBox[{"\"\<DisplayDurations\>\"", "->", "0.01"}]}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.8411345230660224`*^9, 3.8411345447077656`*^9}, {
+  3.8411346618479257`*^9, 3.841134665926077*^9}},
+ CellLabel->
+  "In[1059]:=",ExpressionUUID->"d58ba4a7-e1f8-4261-adee-f0ec3394a76d"]
+}, Open  ]]
+},
+WindowSize->{1200, 1877},
+WindowMargins->{{Automatic, -1208}, {Automatic, -241}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (July 9, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b0dcd17c-6c40-471e-a7ed-5bc2fe42d4d1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 207, 4, 29, "Input",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
+Cell[CellGroupData[{
+Cell[790, 28, 158, 2, 45, "Subsubsection",ExpressionUUID->"7bc48866-c8e2-4111-886c-f3428c3a72a1"],
+Cell[951, 32, 9168, 221, 950, "Input",ExpressionUUID->"f21800ef-c914-456f-94bf-465f1eb9616b"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[10156, 258, 165, 3, 37, "Subsubsection",ExpressionUUID->"f0970b76-f2c6-424e-aa67-e5bd727f7a0a"],
+Cell[10324, 263, 2340, 54, 430, "Input",ExpressionUUID->"161c6efb-9fc2-4362-9b4d-3f2d5d3afd06"],
+Cell[CellGroupData[{
+Cell[12689, 321, 1055, 26, 50, "Input",ExpressionUUID->"cfe6b664-4767-4a5b-af78-2f7d2412a807"],
+Cell[13747, 349, 4834, 97, 241, "Output",ExpressionUUID->"e2af28aa-242e-4ea3-a10c-5a8284db9867"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18618, 451, 256, 5, 29, "Input",ExpressionUUID->"cbfd76a9-3b35-4fdb-8565-0c9b910a363e"],
+Cell[18877, 458, 174, 3, 33, "Output",ExpressionUUID->"a2083bf4-01e4-4b79-b6ac-080a489a4efb"]
+}, Open  ]],
+Cell[19066, 464, 1337, 34, 90, "Input",ExpressionUUID->"dd09d2cb-d06b-495c-b7b4-d2fb78140030"],
+Cell[CellGroupData[{
+Cell[20428, 502, 1768, 49, 190, "Input",ExpressionUUID->"3c16cce1-91ea-4df5-9bc2-a552256649e5"],
+Cell[22199, 553, 2060, 42, 446, "Output",ExpressionUUID->"1f9ad5af-4568-45cb-8916-3ecf37424168"]
+}, Open  ]],
+Cell[24274, 598, 1586, 42, 130, "Input",ExpressionUUID->"a9c33b44-513b-46d9-83d2-aec575e3e018"],
+Cell[25863, 642, 449, 10, 29, "Input",ExpressionUUID->"d58ba4a7-e1f8-4261-adee-f0ec3394a76d"]
+}, Open  ]]
+}
+]
+*)
+
