@@ -3,6 +3,8 @@ import matplotlib.pylab as plt
 import numpy as np
 import scipy.fft
 
+from sklearn.model_selection import train_test_split
+
 
 def center_fft(x):
     return np.roll(np.abs(x), int(len(x) / 2))
@@ -23,3 +25,8 @@ data = np.apply_along_axis(np.flip, 2, data)  # flip data so ATP is on the right
 data = np.apply_along_axis(center_fft, 2, data)  # center PCR peak in the middle
 
 data = [normalize_experiment(experiment) for experiment in data]  # normalize within a single experiment
+
+# TEST, TRAIN, VALIDATION SPLIT
+X_train, X_test, y_train, y_test = train_test_split(data, ground_truth, test_size=0.33, random_state=42)
+
+
