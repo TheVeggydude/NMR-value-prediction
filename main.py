@@ -1,4 +1,4 @@
-import models.mlp
+import models
 import reader
 import numpy as np
 import scipy.fft
