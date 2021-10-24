@@ -1,9 +1,9 @@
-import phillips_reader
+from reader import phillips
 import matplotlib.pylab as plt
 import numpy as np
 import scipy.fft
 
-experiment = phillips_reader.PhillipsData.from_file_pair('set_3A/n8951_5_1_raw_act.SPAR',
+experiment = phillips.PhillipsData.from_file_pair('set_3A/n8951_5_1_raw_act.SPAR',
                                                 'set_3A/n8951_5_1_raw_act.SDAT')
 
 pulse_1 = experiment.data[0, :512]
