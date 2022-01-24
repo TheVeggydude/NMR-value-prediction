@@ -1,0 +1,482 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     19573,        474]
+NotebookOptionsPosition[     18569,        449]
+NotebookOutlinePosition[     18974,        466]
+CellTagsIndexPosition[     18931,        463]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "QMRITools`"}]], "Input",
+ CellChangeTimes->{{3.8411300837429047`*^9, 3.8411300861009274`*^9}, 
+   3.841290996826181*^9},
+ CellLabel->"In[57]:=",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.84129100160222*^9, 3.841291100455184*^9}, {
+  3.841291227747301*^9, 3.841291237355105*^9}},
+ CellLabel->"In[58]:=",ExpressionUUID->"76810402-4536-4ce6-b4fb-8af8a124d387"],
+
+Cell[CellGroupData[{
+
+Cell["Functions", "Subsubsection",
+ CellChangeTimes->{{3.8411349850963955`*^9, 3.8411349900427*^9}, 
+   3.841285431401092*^9},ExpressionUUID->"7bc48866-c8e2-4111-886c-\
+f3428c3a72a1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"dynamic", " ", "PCr", " ", "signal", " ", "function"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"MakePcr", "[", 
+     RowBox[{"start_", ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"trest_", ",", "tex_", ",", "trec_", ",", "dt_"}], "}"}], 
+        ",", 
+        RowBox[{"{", 
+         RowBox[{"pcrEx_", ",", "pcrRec_"}], "}"}]}], "}"}]}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"end", ",", "func", ",", "t"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"end", "=", 
+        RowBox[{"(", 
+         RowBox[{"start", " ", 
+          RowBox[{"Exp", "[", 
+           RowBox[{"tex", "/", 
+            RowBox[{"-", "pcrEx"}]}], "]"}]}], ")"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"func", "=", 
+        RowBox[{"Piecewise", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"start", ",", 
+             RowBox[{"0", "<=", "t", "<", "trest"}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"start", " ", 
+              RowBox[{"Exp", "[", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"t", "-", "trest"}], ")"}], "/", 
+                RowBox[{"-", "pcrEx"}]}], "]"}]}], ",", 
+             RowBox[{"trest", "<=", "t", "<", 
+              RowBox[{"tex", "+", "trest"}]}]}], "}"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"end", "+", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"start", "-", "end"}], ")"}], 
+               RowBox[{"(", 
+                RowBox[{"1", "-", 
+                 RowBox[{"Exp", "[", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"t", "-", "trest", "-", "tex"}], ")"}], "/", 
+                   RowBox[{"-", "pcrRec"}]}], "]"}]}], ")"}]}]}], ",", 
+             RowBox[{
+              RowBox[{"tex", "+", "trest"}], "<=", "t"}]}], "}"}]}], 
+          "\[IndentingNewLine]", "}"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"func", "/.", 
+          RowBox[{"t", "->", "x"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", "0.", ",", 
+           RowBox[{"trest", "+", "tex", "+", "trec"}], ",", "dt"}], "}"}]}], 
+        "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"fucntion", " ", "to", " ", "simulate", " ", "spectra"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SimulateFid", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"lw_", ",", "rat_", ",", "snr_", ",", "shift_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"nsamp_", ",", "bw_", ",", "field_", ",", "nuc_"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"trest_", ",", "tex_", ",", "trec_", ",", "dt_"}], "}"}], 
+        ",", 
+        RowBox[{"{", 
+         RowBox[{"pcrEx_", ",", "pcrRec_"}], "}"}]}], "}"}]}], "]"}], ":=", 
+    RowBox[{"Block", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "names", ",", "fids", ",", "specs", ",", "table", ",", "met", ",", 
+        "metNames", ",", "metAmps", ",", "dw", ",", "gyro", ",", "time", ",", 
+        "specsTS", ",", "\[IndentingNewLine]", "pcrAmpB", ",", "piinS", ",", 
+        "pcrt", ",", "piint", ",", "l", ",", "sigma", ",", "fid", ",", 
+        "fidsI"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "get", " ", "the", " ", "basis", " ", "functions", " ", "for", " ", 
+        "each"}], " ", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"pcrAmpB", "=", 
+        RowBox[{"rat", " ", "250"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"piinS", "=", "78"}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"pcrt", "=", 
+        RowBox[{"MakePcr", "[", 
+         RowBox[{"pcrAmpB", 
+          RowBox[{"(*", 
+           RowBox[{"start", " ", "value"}], "*)"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"trest", ",", "tex", ",", "trec", ",", "dt"}], "}"}], 
+            ",", 
+            RowBox[{"{", 
+             RowBox[{"pcrEx", ",", "pcrRec"}], "}"}]}], "}"}]}], "]"}]}], ";",
+        "\[IndentingNewLine]", 
+       RowBox[{"piint", "=", 
+        RowBox[{"pcrAmpB", "-", "pcrt", "+", "piinS"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"l", "=", 
+        RowBox[{"Length", "[", "pcrt", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"sigma", "=", 
+        RowBox[{"pcrAmpB", "/", "snr"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"dw", "=", 
+        RowBox[{"1.", "/", "bw"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"gyro", "=", 
+        RowBox[{"GetGyro", "[", 
+         RowBox[{"field", ",", "nuc"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"metNames", "=", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<PE\>\"", ",", "\"\<PC\>\"", ",", "\"\<Piex\>\"", ",", 
+          "\"\<Piin\>\"", ",", "\"\<GPE\>\"", ",", "\"\<GPC\>\"", ",", 
+          "\"\<PCr\>\"", ",", "\"\<ATP\>\"", ",", "\"\<NAD\>\"", ",", 
+          "\"\<UDPG\>\""}], "}"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"names", ",", "fidsI", ",", "specs", ",", "table"}], "}"}], 
+        "=", 
+        RowBox[{"GetSpectraBasisFunctions", "[", 
+         RowBox[{"metNames", ",", "\[IndentingNewLine]", 
+          RowBox[{"BasisSequence", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<PulseAcquire\>\"", ",", "0"}], "}"}]}], 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"sequence", " ", "and", " ", "echo", " ", "time"}], ",", 
+            " ", 
+            RowBox[{"normally", " ", "2", " ", "dwell", " ", "times"}]}], 
+           "*)"}], "\[IndentingNewLine]", ",", 
+          RowBox[{"SpectraSamples", "\[Rule]", "nsamp"}], ",", 
+          RowBox[{"SpectraBandwith", "\[Rule]", "bw"}], ",", 
+          RowBox[{"SpectraPpmShift", "\[Rule]", "0"}], ",", 
+          RowBox[{"SpectraFieldStrength", "\[Rule]", "field"}], ",", 
+          RowBox[{"SpectraNucleus", "\[Rule]", "nuc"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"time", "=", 
+        RowBox[{"GetTimeRange", "[", 
+         RowBox[{
+          RowBox[{"fidsI", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], ",", "dw"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"fidsI", "=", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"TimeShiftFid", "[", 
+           RowBox[{"#", ",", "time", ",", "lw"}], "]"}], "&"}], "/@", 
+         "fidsI"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "actual", " ", "loop", " ", "for", " ", "dynamic", " ", 
+         "simulation"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"Table", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"metAmps", "=", 
+           RowBox[{"{", 
+            RowBox[{"17", ",", "30", ",", "39", ",", 
+             RowBox[{"piint", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], ",", "0", ",", "64", ",", 
+             RowBox[{"pcrt", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], ",", "250", ",", "18", ",", 
+             "20"}], "}"}]}], ";", "\[IndentingNewLine]", 
+          "\[IndentingNewLine]", 
+          RowBox[{"specs", "=", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"ShiftSpectra", "[", 
+              RowBox[{
+               RowBox[{"ShiftedFourier", "[", "#", "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"dw", ",", "gyro"}], "}"}], ",", 
+               RowBox[{"RandomReal", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"-", "1"}], ",", "1"}], "}"}], "shift"}], "]"}]}], 
+              "]"}], "&"}], "/@", "fidsI"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"fids", "=", 
+           RowBox[{"ShiftedInverseFourier", "[", 
+            RowBox[{"metAmps", ".", "specs"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", "\[IndentingNewLine]", 
+          RowBox[{"AddNoise", "[", 
+           RowBox[{"fids", ",", "sigma", ",", 
+            RowBox[{"NoiseType", "->", "\"\<Complex\>\""}]}], "]"}]}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "l", ",", "1"}], "}"}]}], "]"}]}]}], 
+     "\[IndentingNewLine]", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.8411325998848705`*^9, 3.8411327148669643`*^9}, 
+   3.8411327550403976`*^9, {3.8411328087211227`*^9, 3.841132809097796*^9}, {
+   3.84113423571773*^9, 3.8411342491152325`*^9}, {3.8411349607610335`*^9, 
+   3.841134978778243*^9}, 3.8412887813673077`*^9, 3.843290023005549*^9},
+ CellLabel->"In[59]:=",ExpressionUUID->"f21800ef-c914-456f-94bf-465f1eb9616b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Simulation", "Subsubsection",
+ CellChangeTimes->{{3.8411349942803497`*^9, 3.8411349971153035`*^9}, {
+  3.843288910585475*^9, 
+  3.84328891257279*^9}},ExpressionUUID->"f0970b76-f2c6-424e-aa67-\
+e5bd727f7a0a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"simulation", " ", "contraints"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"PCrATPratio", "=", "4"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"lineWidth", "=", "30"}], 
+    RowBox[{"(*", "Hz", "*)"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"snr", "=", "40"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"shift", "=", "0.1"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"acquisition", " ", "paramters"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"nsamp", "=", "1000"}], ";"}], 
+   RowBox[{"(*", 
+    RowBox[{"number", " ", "of", " ", "spectral", " ", "samples"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"bw", "=", "5000"}], ";"}], 
+   RowBox[{"(*", 
+    RowBox[{"acquisition", " ", "bandwithd"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"field", "=", "3"}], ";"}], 
+   RowBox[{"(*", 
+    RowBox[{"field", " ", "strenght", " ", "of", " ", "simulations"}], "*)"}],
+    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"nuc", "=", "\"\<31P\>\""}], ";"}], 
+   RowBox[{"(*", 
+    RowBox[{"relevant", " ", "nucleius"}], "*)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"other", " ", "derived", " ", "parameters"}], ",", " ", 
+     RowBox[{"needed", " ", "for", " ", "analysis"}]}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"dw", "=", 
+     RowBox[{"1.", "/", "bw"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"gyro", "=", 
+     RowBox[{"GetGyro", "[", 
+      RowBox[{"field", ",", "nuc"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"PCr", " ", "timings"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"trest", "=", "60"}], ";"}], 
+   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tex", "=", "160"}], ";"}], 
+   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"trec", "=", "300"}], ";"}], 
+   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"dt", "=", "2"}], ";"}], 
+   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"PCr", " ", "half", " ", "times"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"pcrEx", "=", "120"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"pcrRec", "=", "60"}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.841130507109733*^9, 3.8411305096531534`*^9}, {
+   3.841132830159934*^9, 3.8411328313263392`*^9}, {3.8411341833377385`*^9, 
+   3.841134228434599*^9}, {3.8411347650297194`*^9, 3.8411348171745195`*^9}, {
+   3.8411348526795473`*^9, 3.8411348697106085`*^9}, {3.843288443908647*^9, 
+   3.843288478488304*^9}, {3.843288815073586*^9, 3.843289041759594*^9}, 
+   3.843289080795828*^9, {3.8432891442786417`*^9, 3.843289144646633*^9}, {
+   3.84328917798254*^9, 3.8432892076986933`*^9}, {3.843289246937529*^9, 
+   3.843289248569848*^9}, {3.843289632404933*^9, 3.843289640642905*^9}, {
+   3.84329279895256*^9, 3.843292804662228*^9}, {3.843293173200635*^9, 
+   3.843293173259989*^9}, {3.843293409830011*^9, 3.843293410164459*^9}, {
+   3.8432934844866047`*^9, 3.843293484586298*^9}, {3.8432949955600977`*^9, 
+   3.843295001466598*^9}},
+ CellLabel->"In[61]:=",ExpressionUUID->"161c6efb-9fc2-4362-9b4d-3f2d5d3afd06"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"DATA", " ", "GENERATION"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"directoryName", " ", "=", " ", 
+     RowBox[{"\"\<Batch \>\"", "<>", " ", 
+      RowBox[{"DateString", "[", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CreateDirectory", "[", "directoryName", "]"}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"nExperiments", " ", "=", " ", "1000"}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{"number", " ", "of", " ", 
+      RowBox[{"experiments", "/", "size"}], " ", "of", " ", "dataset"}], 
+     "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"pcrRecRand", " ", "=", " ", 
+     RowBox[{"RandomReal", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"50", ",", "70"}], "}"}], ",", 
+       RowBox[{"{", "nExperiments", "}"}]}], "]"}]}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{"pcrRec", " ", "randomized", " ", "values"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{"Export", "[", 
+     RowBox[{
+      RowBox[{"directoryName", "<>", "\"\</ground_truth.csv\>\""}], ",", " ", 
+      "pcrRecRand"}], "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", " ", 
+     RowBox[{"i", " ", "<", " ", 
+      RowBox[{"nExperiments", "+", "1"}]}], ",", " ", 
+     RowBox[{"i", "++"}], ",", " ", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"simulate", " ", "the", " ", 
+       RowBox[{"experiment", "'"}], "s", " ", "FIDs"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"simFid", "=", 
+       RowBox[{"SimulateFid", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"lineWidth", ",", "PCrATPratio", ",", "snr", ",", "shift"}],
+           "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"nsamp", ",", "bw", ",", "field", ",", "nuc"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"trest", ",", "tex", ",", "trec", ",", "dt"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"pcrEx", ",", 
+             RowBox[{"pcrRecRand", "[", 
+              RowBox[{"[", "i", "]"}], "]"}]}], "}"}]}], "}"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{"store", " ", "the", " ", "FID", " ", "sequence"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{
+        RowBox[{"directoryName", "<>", "\"\</experiment_\>\"", "<>", 
+         RowBox[{"ToString", "[", "i", "]"}], "<>", "\"\<.dat\>\""}], ",", 
+        " ", "simFid", ",", "\"\<Binary\>\"", ",", 
+        RowBox[{"\"\<DataFormat\>\"", "->", "\"\<Complex64\>\""}]}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.8432892243187532`*^9, 3.843289299080701*^9}, {
+   3.843289329274061*^9, 3.843289370013875*^9}, {3.8432895161505632`*^9, 
+   3.843289594559277*^9}, {3.843290035227693*^9, 3.843290045860488*^9}, {
+   3.8432900976282187`*^9, 3.843290102741673*^9}, {3.8432901526213217`*^9, 
+   3.8432903095209503`*^9}, {3.843291310791766*^9, 3.843291313026844*^9}, {
+   3.8432914070486727`*^9, 3.8432914116252403`*^9}, {3.84329147655063*^9, 
+   3.843291487797153*^9}, {3.843291550436819*^9, 3.843291680508266*^9}, {
+   3.8432918185828257`*^9, 3.84329183580763*^9}, {3.843291942512491*^9, 
+   3.8432919528208637`*^9}, {3.8432922632087593`*^9, 
+   3.8432922745145273`*^9}, {3.843292434473672*^9, 3.843292490444847*^9}, 
+   3.843292564540609*^9, {3.843292626359644*^9, 3.843292631173359*^9}, {
+   3.843292774006105*^9, 3.843292835955678*^9}, {3.843292879876795*^9, 
+   3.8432928853753242`*^9}, {3.843292927345907*^9, 3.843292932791134*^9}, {
+   3.8432929693782187`*^9, 3.8432929854215937`*^9}, {3.8432930418722677`*^9, 
+   3.843293056183712*^9}, {3.843293304500902*^9, 3.843293348784996*^9}, {
+   3.843295006014782*^9, 3.843295018765867*^9}, {3.843476410967084*^9, 
+   3.843476467122332*^9}, {3.844064527619681*^9, 3.844064528278061*^9}, {
+   3.844080869547525*^9, 3.844080873989997*^9}, {3.844140792282524*^9, 
+   3.8441407939734573`*^9}, {3.844587746408024*^9, 
+   3.844587746516996*^9}},ExpressionUUID->"44532da1-3e8b-409a-b8cd-\
+a9482663cb71"]
+}, Open  ]]
+},
+WindowSize->{1386, 762},
+WindowMargins->{{0, Automatic}, {0, Automatic}},
+DockedCells->{},
+FrontEndVersion->"12.3 for Linux x86 (64-bit) (July 9, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b0dcd17c-6c40-471e-a7ed-5bc2fe42d4d1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 229, 4, 29, "Input",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
+Cell[790, 26, 316, 6, 29, "Input",ExpressionUUID->"76810402-4536-4ce6-b4fb-8af8a124d387"],
+Cell[CellGroupData[{
+Cell[1131, 36, 183, 3, 45, "Subsubsection",ExpressionUUID->"7bc48866-c8e2-4111-886c-f3428c3a72a1"],
+Cell[1317, 41, 9237, 221, 979, "Input",ExpressionUUID->"f21800ef-c914-456f-94bf-465f1eb9616b"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10591, 267, 213, 4, 45, "Subsubsection",ExpressionUUID->"f0970b76-f2c6-424e-aa67-e5bd727f7a0a"],
+Cell[10807, 273, 3457, 81, 525, "Input",ExpressionUUID->"161c6efb-9fc2-4362-9b4d-3f2d5d3afd06"],
+Cell[14267, 356, 4286, 90, 339, "Input",ExpressionUUID->"44532da1-3e8b-409a-b8cd-a9482663cb71"]
+}, Open  ]]
+}
+]
+*)
+
