@@ -6,8 +6,8 @@ import scipy.fft
 from sklearn.model_selection import train_test_split
 
 # Config
-directory = 'simulation/Batch 1000 2'
-model_type = "MLP"
+directory = 'simulation/Batch 100 2'
+model_type = "CNN"
 truth_shape = (2, 261)  # numpy array shape of ground truth for a single experiment.
 
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     if model_type == "MLP":
         model = models.mlp.create_model(truth_shape)
     elif model_type == "CNN":
-        model = models.cnn.create_model()
+        model = models.cnn.create_model(truth_shape)
 
     print('Model created, fitting data...')
 
