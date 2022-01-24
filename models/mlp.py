@@ -24,5 +24,5 @@ def create_model(r_shape):
 
     model.summary()
 
-    model.compile(loss="mean_squared_error", optimizer='adam')
+    model.compile(loss="mean_squared_error", optimizer='adam', metrics=['mean_squared_error'])
     return model
