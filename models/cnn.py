@@ -10,7 +10,8 @@ def create_model(r_shape):
     model.add(layers.Conv2D(8, (7, 7, ), activation='relu'))
     model.add(layers.AveragePooling2D((3, 3)))
     model.add(layers.Flatten())
-    model.add(layers.Dense(r_shape[0] * r_shape[1], activation="relu"))
+    # model.add(layers.Dense(10, activation="relu"))
+    model.add(layers.Dense(r_shape[0] * r_shape[1]))
     model.add(layers.Reshape(r_shape))
 
     model.summary()
