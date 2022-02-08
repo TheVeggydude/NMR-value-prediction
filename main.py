@@ -2,12 +2,14 @@ import models
 import reader
 import numpy as np
 import scipy.fft
+import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
+from tensorflow import keras
 
 # Config
-directory = 'simulation\\Batch x'
-model_type = "CNN"
+directory = 'simulation\\Batch snr5'
+model_type = "MLP"
 truth_shape = (261, 2)  # numpy array shape of ground truth for a single experiment.
 
 
@@ -46,6 +48,9 @@ if __name__ == '__main__':
 
     ground_truth = np.asarray([np.absolute(experiment) for experiment in ground_truth])
 
+    plt.imshow(np.array(data[0]), interpolation='nearest')
+    plt.show()
+
     print(data.shape)
     print(ground_truth.shape)
 
@@ -64,6 +69,10 @@ if __name__ == '__main__':
     elif model_type == "CNN":
         model = models.cnn.create_model(truth_shape)
 
+    # FEATURE EXTRACTOR - FOR EVALUATION OF PERFORMANCE ONLY
+    extractor = keras.Model(inputs=model.inputs,
+                            outputs=[layer.output for layer in model.layers])
+
     print('Model created, fitting data...')
 
     history = model.fit(
@@ -79,25 +88,28 @@ if __name__ == '__main__':
     results = model.evaluate(X_test, y_test, batch_size=64)
     print("test loss, test acc:", results)
 
-    # Example plot
-
-    import matplotlib.pyplot as plt
-
-    # Generate 1 result
-    result = model.predict(np.array([data[0], ]))
+    # PLOTTING
+    result = model.predict(np.array([data[0], ]))     # Generate 1 result
 
     # Plot PCr
     plt.plot(ground_truth[0, :, 0])
     plt.title("PCr experiment 1")
     plt.plot(result[0, :, 0])
     plt.legend(["ground truth", "sample"])
-    plt.show()
     plt.savefig("pcr_experiment_1.png")
+    plt.show()
 
     # Plot PIIn
     plt.plot(ground_truth[0, :, 1])
     plt.title("PIIn experiment 1")
     plt.plot(result[0, :, 1])
     plt.legend(["ground truth", "sample"])
-    plt.show()
     plt.savefig("piin_experiment_1.png")
+    plt.show()
+
+    features = extractor(np.array([data[0], ]))
+
+    for feature in features:
+        print(feature.shape)
+        plt.imshow(feature[0], interpolation='nearest')
+        plt.show()
