@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     22929,        533]
-NotebookOptionsPosition[     21880,        507]
-NotebookOutlinePosition[     22327,        525]
-CellTagsIndexPosition[     22284,        522]
+NotebookDataLength[     24320,        552]
+NotebookOptionsPosition[     23274,        526]
+NotebookOutlinePosition[     23718,        544]
+CellTagsIndexPosition[     23675,        541]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -22,7 +22,7 @@ Cell[BoxData[
  RowBox[{"<<", "QMRITools`"}]], "Input",
  CellChangeTimes->{{3.8411300837429047`*^9, 3.8411300861009274`*^9}, 
    3.841290996826181*^9},
- CellLabel->"In[93]:=",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
+ CellLabel->"In[1]:=",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
 
 Cell[BoxData[
  RowBox[{
@@ -31,7 +31,7 @@ Cell[BoxData[
  CellChangeTimes->{{3.84129100160222*^9, 3.841291100455184*^9}, {
   3.841291227747301*^9, 3.841291237355105*^9}, {3.851927413613394*^9, 
   3.8519274283845167`*^9}},
- CellLabel->"In[94]:=",ExpressionUUID->"76810402-4536-4ce6-b4fb-8af8a124d387"],
+ CellLabel->"In[2]:=",ExpressionUUID->"76810402-4536-4ce6-b4fb-8af8a124d387"],
 
 Cell[CellGroupData[{
 
@@ -280,7 +280,7 @@ Cell[BoxData[
    3.847173626892262*^9}, 3.847179085048019*^9, {3.847182236035083*^9, 
    3.847182324162065*^9}, {3.847182468470839*^9, 3.847182513134583*^9}, 
    3.847182674534369*^9},
- CellLabel->"In[95]:=",ExpressionUUID->"f21800ef-c914-456f-94bf-465f1eb9616b"]
+ CellLabel->"In[3]:=",ExpressionUUID->"f21800ef-c914-456f-94bf-465f1eb9616b"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -302,37 +302,34 @@ Cell[BoxData[
     RowBox[{"lineWidth", "=", "30"}], 
     RowBox[{"(*", "Hz", "*)"}], ";"}], "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"snr", "=", "40"}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{"snrList", "=", 
+     RowBox[{"{", "40", "}"}]}], ";"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"shift", "=", "0.1"}], ";"}], "\[IndentingNewLine]", 
    "\[IndentingNewLine]", 
    RowBox[{"(*", 
     RowBox[{"acquisition", " ", "paramters"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"nsamp", "=", "1000"}], ";"}], 
-   RowBox[{"(*", 
-    RowBox[{"number", " ", "of", " ", "spectral", " ", "samples"}], "*)"}], 
-   "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"bw", "=", "5000"}], ";"}], 
-   RowBox[{"(*", 
-    RowBox[{"acquisition", " ", "bandwithd"}], "*)"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"field", "=", "3"}], ";"}], 
-   RowBox[{"(*", 
-    RowBox[{"field", " ", "strenght", " ", "of", " ", "simulations"}], "*)"}],
+    RowBox[{"nsamp", "=", "1000"}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"number", " ", "of", " ", "spectral", " ", "samples"}], "*)"}], 
     "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"nuc", "=", "\"\<31P\>\""}], ";"}], 
-   RowBox[{"(*", 
-    RowBox[{"relevant", " ", "nucleius"}], "*)"}], "\[IndentingNewLine]", 
-   "\[IndentingNewLine]", 
-   RowBox[{"(*", 
-    RowBox[{
-     RowBox[{"other", " ", "derived", " ", "parameters"}], ",", " ", 
-     RowBox[{"needed", " ", "for", " ", "analysis"}]}], "*)"}], 
-   "\[IndentingNewLine]", 
-   RowBox[{
+    RowBox[{"bw", "=", "5000"}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"acquisition", " ", "bandwithd"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"field", "=", "3"}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"field", " ", "strenght", " ", "of", " ", "simulations"}], 
+     "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"nuc", "=", "\"\<31P\>\""}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"relevant", " ", "nucleius"}], "*)"}], "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"other", " ", "derived", " ", "parameters"}], ",", " ", 
+      RowBox[{"needed", " ", "for", " ", "analysis"}]}], "*)"}], 
+    "\[IndentingNewLine]", 
     RowBox[{"dw", "=", 
      RowBox[{"1.", "/", "bw"}]}], ";"}], "\[IndentingNewLine]", 
    RowBox[{
@@ -343,23 +340,24 @@ Cell[BoxData[
    RowBox[{"(*", 
     RowBox[{"PCr", " ", "timings"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"trest", "=", "60"}], ";"}], 
-   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"tex", "=", "160"}], ";"}], 
-   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"trec", "=", "300"}], ";"}], 
-   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"dt", "=", "2"}], ";"}], 
-   RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
-   RowBox[{"(*", 
-    RowBox[{"PCr", " ", "half", " ", "times"}], "*)"}], "\[IndentingNewLine]", 
-   RowBox[{
+    RowBox[{"trest", "=", "60"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"tex", "=", "160"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"trec", "=", "300"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"dt", "=", "2"}], ";", 
+    RowBox[{"(*", "s", "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"PCr", " ", "half", " ", "times"}], "*)"}], 
+    "\[IndentingNewLine]", 
     RowBox[{"pcrEx", "=", "120"}], ";"}], "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"pcrRec", "=", "60"}], ";"}]}]}]], "Input",
+    RowBox[{"pcrRec", "=", "60"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{"FOR", " ", "EACH", " ", "SNR", " ", "VALUE"}], 
+    "*)"}]}]}]], "Input",
  CellChangeTimes->{{3.841130507109733*^9, 3.8411305096531534`*^9}, {
    3.841132830159934*^9, 3.8411328313263392`*^9}, {3.8411341833377385`*^9, 
    3.841134228434599*^9}, {3.8411347650297194`*^9, 3.8411348171745195`*^9}, {
@@ -371,26 +369,47 @@ Cell[BoxData[
    3.84329279895256*^9, 3.843292804662228*^9}, {3.843293173200635*^9, 
    3.843293173259989*^9}, {3.843293409830011*^9, 3.843293410164459*^9}, {
    3.8432934844866047`*^9, 3.843293484586298*^9}, {3.8432949955600977`*^9, 
-   3.843295001466598*^9}},
- CellLabel->"In[97]:=",ExpressionUUID->"161c6efb-9fc2-4362-9b4d-3f2d5d3afd06"],
+   3.843295001466598*^9}, {3.853313563779716*^9, 3.8533135831708593`*^9}, {
+   3.8533136152034416`*^9, 3.853313620226766*^9}, {3.8533136715551243`*^9, 
+   3.8533136719544377`*^9}, {3.853313906896803*^9, 3.8533139249297256`*^9}, {
+   3.8533142422723446`*^9, 3.853314255247879*^9}, {3.8533143575833426`*^9, 
+   3.8533143673292913`*^9}, 3.8533144207194495`*^9, {3.8533447329593754`*^9, 
+   3.8533447343502398`*^9}},ExpressionUUID->"161c6efb-9fc2-4362-9b4d-\
+3f2d5d3afd06"],
 
 Cell[BoxData[
- RowBox[{
-  RowBox[{"(*", 
-   RowBox[{"DATA", " ", "GENERATION"}], "*)"}], "\[IndentingNewLine]", 
+ RowBox[{"For", "[", 
   RowBox[{
+   RowBox[{"j", " ", "=", " ", "1"}], ",", " ", 
+   RowBox[{"j", " ", "<", " ", 
+    RowBox[{
+     RowBox[{"Length", "[", "snrList", "]"}], "+", "1"}]}], ",", " ", 
+   RowBox[{"j", "++"}], ",", "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"directoryName", " ", "=", " ", "\"\<Batch x\>\""}], ";"}], 
-   "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"CreateDirectory", "[", "directoryName", "]"}], ";"}], 
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"nExperiments", " ", "=", " ", "10000"}], ";", " ", 
+    RowBox[{"snr", " ", "=", " ", 
+     RowBox[{"snrList", "[", 
+      RowBox[{"[", "j", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", "snr", "]"}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"FILE", " ", "STRUCTURE"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"directoryName", " ", "=", " ", 
+     RowBox[{"\"\<Batch snr\>\"", " ", "<>", " ", 
+      RowBox[{"ToString", "[", "snr", "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"CreateDirectory", "[", "directoryName", "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"groundTruthDirectoryName", " ", "=", " ", 
+     RowBox[{"directoryName", " ", "<>", " ", "\"\<\\\\ground_truth\>\""}]}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"CreateDirectory", "[", "groundTruthDirectoryName", "]"}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"DATA", " ", "GENERATION"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"nExperiments", " ", "=", " ", "1000"}], ";", " ", 
     RowBox[{"(*", 
      RowBox[{"number", " ", "of", " ", 
       RowBox[{"experiments", "/", "size"}], " ", "of", " ", "dataset"}], 
-     "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "*)"}], "\[IndentingNewLine]", 
     RowBox[{"pcrRecRand", " ", "=", " ", 
      RowBox[{"RandomReal", "[", 
       RowBox[{
@@ -399,70 +418,65 @@ Cell[BoxData[
        RowBox[{"{", "nExperiments", "}"}]}], "]"}]}], ";", " ", 
     RowBox[{"(*", 
      RowBox[{"pcrRec", " ", "randomized", " ", "values"}], "*)"}], 
-    "\[IndentingNewLine]", 
-    RowBox[{"Export", "[", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"For", "[", 
      RowBox[{
-      RowBox[{"directoryName", "<>", "\"\<\\\\ground_truth.csv\>\""}], ",", 
-      " ", "pcrRecRand"}], "]"}], ";"}], "\[IndentingNewLine]", 
-   "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"groundTruthDirectoryName", " ", "=", " ", 
-     RowBox[{"directoryName", " ", "<>", " ", "\"\<\\\\ground_truth\>\""}]}], 
-    ";"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"CreateDirectory", "[", "groundTruthDirectoryName", "]"}], ";"}], 
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
-   RowBox[{"For", "[", 
-    RowBox[{
-     RowBox[{"i", "=", "1"}], ",", " ", 
-     RowBox[{"i", " ", "<", " ", 
-      RowBox[{"nExperiments", "+", "1"}]}], ",", " ", 
-     RowBox[{"i", "++"}], ",", " ", "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{"simulate", " ", "the", " ", 
-       RowBox[{"experiment", "'"}], "s", " ", "FIDs"}], "*)"}], 
-     "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"simFid", ",", " ", "pcr", ",", " ", "piint"}], "}"}], "=", 
-       " ", 
-       RowBox[{"SimulateFid", "[", 
-        RowBox[{
-         RowBox[{"{", 
-          RowBox[{"lineWidth", ",", "PCrATPratio", ",", "snr", ",", "shift"}],
-           "}"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"nsamp", ",", "bw", ",", "field", ",", "nuc"}], "}"}], ",", 
-         RowBox[{"{", 
-          RowBox[{
-           RowBox[{"{", 
-            RowBox[{"trest", ",", "tex", ",", "trec", ",", "dt"}], "}"}], ",", 
-           RowBox[{"{", 
-            RowBox[{"pcrEx", ",", 
-             RowBox[{"pcrRecRand", "[", 
-              RowBox[{"[", "i", "]"}], "]"}], ",", " ", "i"}], "}"}]}], 
-          "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"(*", 
-       RowBox[{"store", " ", "the", " ", "FID", " ", "sequence"}], "*)"}], 
+      RowBox[{"i", "=", "1"}], ",", " ", 
+      RowBox[{"i", " ", "<", " ", 
+       RowBox[{"nExperiments", "+", "1"}]}], ",", " ", 
+      RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", " ", 
       "\[IndentingNewLine]", 
-      RowBox[{"Export", "[", 
+      RowBox[{"(*", 
+       RowBox[{"simulate", " ", "the", " ", 
+        RowBox[{"experiment", "'"}], "s", " ", "FIDs"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
        RowBox[{
-        RowBox[{"directoryName", "<>", "\"\<\\\\experiment_\>\"", "<>", 
-         RowBox[{"ToString", "[", "i", "]"}], "<>", "\"\<.dat\>\""}], ",", 
-        " ", "simFid", ",", "\"\<Binary\>\"", ",", 
-        RowBox[{"\"\<DataFormat\>\"", "->", "\"\<Complex64\>\""}]}], "]"}], 
-      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-      RowBox[{"Export", "[", 
-       RowBox[{
-        RowBox[{"groundTruthDirectoryName", "<>", "\"\<\\\\experiment_\>\"", "<>", 
-         RowBox[{"ToString", "[", "i", "]"}], "<>", "\"\<.dat\>\""}], ",", 
-        " ", 
         RowBox[{"{", 
-         RowBox[{"pcr", ",", " ", "piint"}], "}"}], ",", "\"\<Binary\>\"", 
-        ",", 
-        RowBox[{"\"\<DataFormat\>\"", "->", "\"\<Complex64\>\""}]}], "]"}], 
-      ";"}]}], "\[IndentingNewLine]", "]"}]}]}]], "Input",
+         RowBox[{"simFid", ",", " ", "pcr", ",", " ", "piint"}], "}"}], "=", 
+        " ", 
+        RowBox[{"SimulateFid", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "lineWidth", ",", "PCrATPratio", ",", "snr", ",", "shift"}], "}"}],
+           ",", 
+          RowBox[{"{", 
+           RowBox[{"nsamp", ",", "bw", ",", "field", ",", "nuc"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"trest", ",", "tex", ",", "trec", ",", "dt"}], "}"}], 
+            ",", 
+            RowBox[{"{", 
+             RowBox[{"pcrEx", ",", 
+              RowBox[{"pcrRecRand", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], ",", " ", "i"}], "}"}]}], 
+           "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{"store", " ", "the", " ", "FID", " ", "sequence"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{"directoryName", "<>", "\"\<\\\\experiment_\>\"", "<>", 
+          RowBox[{"ToString", "[", "i", "]"}], "<>", "\"\<.dat\>\""}], ",", 
+         " ", "simFid", ",", "\"\<Binary\>\"", ",", 
+         RowBox[{"\"\<DataFormat\>\"", "->", "\"\<Complex64\>\""}]}], "]"}], 
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{
+         RowBox[{
+         "groundTruthDirectoryName", "<>", "\"\<\\\\experiment_\>\"", "<>", 
+          RowBox[{"ToString", "[", "i", "]"}], "<>", "\"\<.dat\>\""}], ",", 
+         " ", 
+         RowBox[{"Transpose", "[", 
+          RowBox[{"{", 
+           RowBox[{"pcr", ",", " ", "piint"}], "}"}], "]"}], ",", 
+         "\"\<Binary\>\"", ",", 
+         RowBox[{"\"\<DataFormat\>\"", "->", "\"\<Complex64\>\""}]}], "]"}], 
+       ";"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
  CellChangeTimes->{{3.8432892243187532`*^9, 3.843289299080701*^9}, {
    3.843289329274061*^9, 3.843289370013875*^9}, {3.8432895161505632`*^9, 
    3.843289594559277*^9}, {3.843290035227693*^9, 3.843290045860488*^9}, {
@@ -500,15 +514,20 @@ Cell[BoxData[
    3.852030129305318*^9, 3.8520301727258277`*^9}, {3.8520304403083735`*^9, 
    3.852030440467949*^9}, {3.8520306753817043`*^9, 3.8520306762593946`*^9}, {
    3.8520308318101254`*^9, 3.8520308472020545`*^9}, {3.852030884705513*^9, 
-   3.852030896273424*^9}, 
-   3.85203100395317*^9},ExpressionUUID->"44532da1-3e8b-409a-b8cd-\
+   3.852030896273424*^9}, 3.85203100395317*^9, {3.853313523094878*^9, 
+   3.8533135580834064`*^9}, {3.853313633747795*^9, 3.853313889698119*^9}, {
+   3.8533139416496315`*^9, 3.8533140080012074`*^9}, 3.8533140448495946`*^9, {
+   3.85331427144116*^9, 3.8533142859845157`*^9}, {3.85331437121602*^9, 
+   3.853314371583245*^9}, {3.853314444928851*^9, 3.853314445535098*^9}, {
+   3.8533165837955713`*^9, 3.8533166017631793`*^9}, 
+   3.8533447438231144`*^9},ExpressionUUID->"44532da1-3e8b-409a-b8cd-\
 a9482663cb71"]
 }, Open  ]]
 },
-WindowSize->{1034, 1581},
-WindowMargins->{{-1050, Automatic}, {Automatic, 0}},
+WindowSize->{2544, 1341},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
 DockedCells->{},
-Magnification:>1. Inherited,
+Magnification:>1.5 Inherited,
 FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (July 9, 2021)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"b0dcd17c-6c40-471e-a7ed-5bc2fe42d4d1"
@@ -524,16 +543,16 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 229, 4, 29, "Input",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
-Cell[790, 26, 367, 7, 29, "Input",ExpressionUUID->"76810402-4536-4ce6-b4fb-8af8a124d387"],
+Cell[558, 20, 228, 4, 43, "Input",ExpressionUUID->"505485fb-8f8a-4adf-8347-c80681274dfe"],
+Cell[789, 26, 366, 7, 43, "Input",ExpressionUUID->"76810402-4536-4ce6-b4fb-8af8a124d387"],
 Cell[CellGroupData[{
-Cell[1182, 37, 183, 3, 45, "Subsubsection",ExpressionUUID->"7bc48866-c8e2-4111-886c-f3428c3a72a1"],
-Cell[1368, 42, 10252, 240, 1050, "Input",ExpressionUUID->"f21800ef-c914-456f-94bf-465f1eb9616b"]
+Cell[1180, 37, 183, 3, 67, "Subsubsection",ExpressionUUID->"7bc48866-c8e2-4111-886c-f3428c3a72a1"],
+Cell[1366, 42, 10251, 240, 1494, "Input",ExpressionUUID->"f21800ef-c914-456f-94bf-465f1eb9616b"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[11657, 287, 213, 4, 45, "Subsubsection",ExpressionUUID->"f0970b76-f2c6-424e-aa67-e5bd727f7a0a"],
-Cell[11873, 293, 3457, 81, 510, "Input",ExpressionUUID->"161c6efb-9fc2-4362-9b4d-3f2d5d3afd06"],
-Cell[15333, 376, 6531, 128, 450, "Input",ExpressionUUID->"44532da1-3e8b-409a-b8cd-a9482663cb71"]
+Cell[11654, 287, 213, 4, 67, "Subsubsection",ExpressionUUID->"f0970b76-f2c6-424e-aa67-e5bd727f7a0a"],
+Cell[11870, 293, 3909, 84, 798, "Input",ExpressionUUID->"161c6efb-9fc2-4362-9b4d-3f2d5d3afd06"],
+Cell[15782, 379, 7476, 144, 740, "Input",ExpressionUUID->"44532da1-3e8b-409a-b8cd-a9482663cb71"]
 }, Open  ]]
 }
 ]
