@@ -17,9 +17,7 @@ def create_model(r_shape):
     model = keras.Sequential()
     model.add(keras.Input(shape=(261, 1000, 1)))  # Input is a whole experiment
     model.add(layers.Flatten())
-    # model.add(layers.Dense(r_shape[0] * r_shape[1] * 4, activation="relu"))
-    # model.add(layers.Dense(r_shape[0] * r_shape[1] * 2, activation="relu"))
-    model.add(layers.Dense(r_shape[0] * r_shape[1], activation="relu"))
+    model.add(layers.Dense(r_shape[0] * r_shape[1]))
     model.add(layers.Reshape(r_shape))
 
     model.summary()
