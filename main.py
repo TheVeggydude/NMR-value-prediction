@@ -9,7 +9,7 @@ from tensorflow import keras
 
 # Config
 directory = 'simulation\\Batch snr5'
-model_type = "MLP"
+model_type = "CNN"
 truth_shape = (261, 2)  # numpy array shape of ground truth for a single experiment.
 
 
