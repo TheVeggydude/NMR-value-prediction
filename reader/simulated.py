@@ -42,4 +42,4 @@ def read_dat(filename, r_shape):
     """
 
     raw = np.fromfile(filename, np.complex64)
-    return raw.reshape(r_shape[0], r_shape[1])
+    return raw.reshape(r_shape)
