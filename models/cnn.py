@@ -296,6 +296,30 @@ def create_model(output_shape, input_shape=(301, 512, 1), v=1, n_rep=1):
             )
         )
 
+    if v == 11:
+        model.add(keras.Input(shape=input_shape))  # Input is a whole experiment, first index is batch size.
+
+        # First Conv2D block
+        model.add(
+            layers.Conv2D(
+                filters=32,
+                kernel_size=64,
+                activation='relu',
+                strides=(1, 32),
+                padding='same'
+            )
+        )
+
+        model.add(
+            layers.Conv2D(
+                filters=1,
+                kernel_size=16,
+                activation='relu',
+                strides=(1, 8),
+                padding='same'
+            )
+        )
+
     model.summary()
     return model
 
