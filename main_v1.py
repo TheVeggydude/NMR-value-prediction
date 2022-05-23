@@ -14,7 +14,7 @@ truth_shape = (261, 2)  # numpy array shape of ground truth for a single experim
 
 batch_size = 16
 epochs = 10  # number of training cycles - epochs.
-trials = 1  # number of runs for ML experiments.
+trials = 2  # number of runs for ML experiments.
 
 if __name__ == '__main__':
 
@@ -33,12 +33,13 @@ if __name__ == '__main__':
 
     ground_truth = preprocessing.as_absolute(ground_truth)
 
-    plt.imshow(np.array(data[0]), interpolation='nearest')
-    plt.show()
+    # plt.imshow(np.array(data[0]), interpolation='nearest')
+    # plt.show()
 
     print('Data preprocessed, splitting...')
 
     trial_scores = []
+    trial_results = []
 
     for i in range(trials):
 
@@ -71,46 +72,55 @@ if __name__ == '__main__':
 
         # EVALUATION
         print("Evaluate on test data")
-        results = model.evaluate(X_test, y_test, batch_size=64)
+        results = model.evaluate(X_test, y_test, batch_size=batch_size)
         print("test loss, test acc:", results)
 
         trial_scores.append(history.history)
+        trial_results.append(results[1:])
 
-    # PLOTTING
-    loss_matrix = np.asarray([trial['loss'] for trial in trial_scores])
+    # Compute averages
+    result_matrix = np.asarray(trial_results)
+    print(trial_results)
 
-    x = np.arange(epochs)
-    y = np.mean(loss_matrix, axis=0)  # mean per epoch
-    e = np.var(loss_matrix, axis=0)  # variance per epoch
+    y = np.mean(result_matrix, axis=0)  # mean per metric
+    e = np.var(result_matrix, axis=0)  # variance per metric
 
     print(y)
     print(e)
 
-    # plt.plot(x, y)
-    plt.errorbar(x, y, e, linestyle='None', marker='^')
-    plt.show()
 
-    result = model.predict(np.array([data[0], ]))     # Generate 1 result
-
-    # Plot PCr
-    plt.plot(ground_truth[0, :, 0])
-    plt.title("PCr experiment 1")
-    plt.plot(result[0, :, 0])
-    plt.legend(["ground truth", "sample"])
-    plt.savefig("pcr_experiment_1.png")
-    plt.show()
-
-    # Plot PIIn
-    plt.plot(ground_truth[0, :, 1])
-    plt.title("PIIn experiment 1")
-    plt.plot(result[0, :, 1])
-    plt.legend(["ground truth", "sample"])
-    plt.savefig("piin_experiment_1.png")
-    plt.show()
-
-    features = extractor(np.array([data[0], ]))
-
-    for feature in features:
-        print(feature.shape)
-        plt.imshow(feature[0], interpolation='nearest')
-        plt.show()
+    # # PLOTTING
+    # loss_matrix = np.asarray([trial['loss'] for trial in trial_scores])
+    #
+    # x = np.arange(epochs)
+    # y = np.mean(loss_matrix, axis=0)  # mean per epoch
+    # e = np.var(loss_matrix, axis=0)  # variance per epoch
+    #
+    # # plt.plot(x, y)
+    # plt.errorbar(x, y, e, linestyle='None', marker='^')
+    # plt.show()
+    #
+    # result = model.predict(np.array([data[0], ]))     # Generate 1 result
+    #
+    # # Plot PCr
+    # plt.plot(ground_truth[0, :, 0])
+    # plt.title("PCr experiment 1")
+    # plt.plot(result[0, :, 0])
+    # plt.legend(["ground truth", "sample"])
+    # plt.savefig("pcr_experiment_1.png")
+    # plt.show()
+    #
+    # # Plot PIIn
+    # plt.plot(ground_truth[0, :, 1])
+    # plt.title("PIIn experiment 1")
+    # plt.plot(result[0, :, 1])
+    # plt.legend(["ground truth", "sample"])
+    # plt.savefig("piin_experiment_1.png")
+    # plt.show()
+    #
+    # features = extractor(np.array([data[0], ]))
+    #
+    # for feature in features:
+    #     print(feature.shape)
+    #     plt.imshow(feature[0], interpolation='nearest')
+    #     plt.show()
