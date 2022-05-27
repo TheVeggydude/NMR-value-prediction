@@ -22,7 +22,6 @@ if __name__ == '__main__':
 
     # Track indices
     idx = [i for i in range(len(data))]
-    # idx = idx[:len(idx)-1]
 
     # Randomize indices
     random.shuffle(idx)
