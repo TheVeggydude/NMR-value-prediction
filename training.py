@@ -5,7 +5,18 @@ import models
 
 setups = [
     {
-        "name": "SomeNetworkName",
+        "name": "2d_cnn_simple_1filter",
+        "dataset": "2022-02-19T16_52_00",
+        "type": "cnn",
+        "v": 8,
+        "dimensions": ((301, 2), (301, 512, 1)),
+        "n_rep": 1,
+        "batch_size": 32,
+        "epochs": 10000,
+        "runs": 10
+    },
+    {
+        "name": "2d_cnn_simple_8filters",
         "dataset": "2022-02-19T16_52_00",
         "type": "cnn",
         "v": 9,
@@ -13,7 +24,62 @@ setups = [
         "n_rep": 1,
         "batch_size": 32,
         "epochs": 10000,
-        "runs": 1
+        "runs": 10
+    },
+    {
+        "name": "2d_cnn_simple_32filters",
+        "dataset": "2022-02-19T16_52_00",
+        "type": "cnn",
+        "v": 11,
+        "dimensions": ((301, 2), (301, 512, 1)),
+        "n_rep": 1,
+        "batch_size": 32,
+        "epochs": 10000,
+        "runs": 10
+    },
+    {
+        "name": "1d_cnn_simple_kernel4",
+        "dataset": "2022-02-19T16_52_00",
+        "type": "cnn",
+        "v": 3,
+        "dimensions": ((301, 2), (301, 512)),
+        "n_rep": 1,
+        "batch_size": 32,
+        "epochs": 10000,
+        "runs": 10
+    },
+    {
+        "name": "1d_cnn_simple_kernel8",
+        "dataset": "2022-02-19T16_52_00",
+        "type": "cnn",
+        "v": 4,
+        "dimensions": ((301, 2), (301, 512)),
+        "n_rep": 1,
+        "batch_size": 32,
+        "epochs": 10000,
+        "runs": 10
+    },
+    {
+        "name": "1d_cnn_simple_kernel16",
+        "dataset": "2022-02-19T16_52_00",
+        "type": "cnn",
+        "v": 5,
+        "dimensions": ((301, 2), (301, 512)),
+        "n_rep": 1,
+        "batch_size": 32,
+        "epochs": 10000,
+        "runs": 10
+    },
+    {
+        "name": "1d_cnn_simple_kernel32",
+        "dataset": "2022-02-19T16_52_00",
+        "type": "cnn",
+        "v": 6,
+        "dimensions": ((301, 2), (301, 512)),
+        "n_rep": 1,
+        "batch_size": 32,
+        "epochs": 10000,
+        "runs": 10
     },
 ]
 
@@ -23,6 +89,8 @@ if __name__ == '__main__':
 
     # Train each setup in the list
     for setup in setups:
+
+        print('Running setup:', setup['name'])
 
         ###
         # Data loading
@@ -50,6 +118,8 @@ if __name__ == '__main__':
         ###
 
         for run in range(setup['runs']):
+
+            print('Run:', str(run))
 
             # Wrap validation set back around to 0th batch if test set is at the end
             val_idx = run + 1 if run + 1 < len(data) - 1 else 0
