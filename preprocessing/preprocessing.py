@@ -25,11 +25,14 @@ def preprocess(data, ground, v=2, transpose=True):
                 ) for exp in data
             ])
 
-        norms = np.asarray([np.linalg.norm(exp) for exp in data])
+        # For each experiment in the dataset
+        for i, experiment in enumerate(data):
 
-        # Normalize data and ground using same value, keeping relative relation between experiments.
-        data = np.asarray([exp/norms[i] for i, exp in enumerate(data)])
-        ground = np.asarray([exp/norms[i] for i, exp in enumerate(ground)])
+            # Get maximal value
+            norm_scalar = np.amax(experiment)
+
+            data[i] = np.asarray([experiment / norm_scalar])  # scale data
+            ground[i] = np.asarray([ground[i] / norm_scalar])  # scale ground truth
 
         # Shuffle axes to have the same order as the data axes.
         ground = ground.transpose((0, 2, 1))
