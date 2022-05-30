@@ -1,8 +1,6 @@
 from tensorflow import keras
 from tensorflow.keras import layers
 
-import tensorflow as tf
-
 
 def create_model(output_shape, input_shape=(301, 512, 1), v=1, n_rep=1):
     model = keras.Sequential()
