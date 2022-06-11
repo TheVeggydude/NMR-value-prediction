@@ -323,4 +323,4 @@ def create_model(output_shape, input_shape=(301, 512, 1), v=1, n_rep=1):
 
 
 if __name__ == '__main__':
-    create_model((301, 2), (301, 512, 1), v=9, n_rep=1)
+    create_model((301, 2), (301, 512), v=5, n_rep=1)

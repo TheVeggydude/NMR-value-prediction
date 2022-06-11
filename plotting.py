@@ -1,10 +1,64 @@
+import numpy
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
 
+def compute_noise_metric(datapoint):
+
+    roi = datapoint[:, : 200]
+    return np.var(roi)
+
+
+def compute_mse(predictions):
+
+    mse = tf.keras.metrics.MeanSquaredError()
+    mse_results = []
+
+    # For each datapoint to be tested, compute the MSE.
+    for index, prediction in enumerate(predictions):
+        mse.reset_state()
+        mse.update_state(ground_test[index], prediction)
+        mse_results.append((mse.result().numpy(), index))
+
+    return mse_results
+
+
+def plot_input(datapoint):
+
+    plt.imshow(np.array(datapoint), interpolation='nearest')
+    plt.show()
+
+
+def plot_pcr_subset(subset, ground, title, use_legend=True):
+    legend = []
+
+    # Show each of the worst X fits
+    for item in subset:
+
+        # Plot PCr
+        plt.plot(ground[item[1], :, 1])
+        legend.append("idx: " + str(item[1]) + ", " + str(item[0]))
+
+    plt.title(title)
+    if use_legend:
+        plt.legend(legend)
+
+    plt.show()
+
+
+def plot_mse_vs_noise(mse, noise):
+    plt.scatter(mse, noise)
+
+    plt.title("MSE score vs noise level")
+    plt.xlabel("MSE")
+    plt.ylabel("Noise")
+
+    plt.show()
+
+
 setup = {
-            "name": "2d_cnn_simple_8filters",
+            "name": "1D_cnn_simple_kernel16",
             "dataset": "2022-02-19T16_52_00",
             "dimensions": ((301, 2), (301, 512, 1)),
             "batch_size": 32,
@@ -12,6 +66,7 @@ setup = {
         }
 
 test_batch = 0
+
 
 if __name__ == '__main__':
 
@@ -37,73 +92,16 @@ if __name__ == '__main__':
 
     # Generate predictions
     predictions = model.predict(data_test)
-    mse = tf.keras.metrics.MeanSquaredError()
-    mae = tf.keras.metrics.MeanAbsoluteError()
-    mse_results = []
 
-    # For each datapoint to be tested, compute the MSE.
-    for index, prediction in enumerate(predictions):
-        mse.reset_state()
-        mse.update_state(ground_test[index], prediction)
-        mse_results.append((mse.result().numpy(), index))
-
-    # # Plot all PCR
-    # for index, prediction in enumerate(predictions):
-    #     plt.plot(prediction[:, 1])
-    #
-    # plt.title("All PCR predictions")
-    # plt.show()
-    #
-    # # Plot all Pii
-    # for index, prediction in enumerate(predictions):
-    #     plt.plot(prediction[:, 0])
-    #
-    # plt.title("All Pii predictions")
-    # plt.show()
-
-    # Sort results
+    # Valuate results
+    mse_results = compute_mse(predictions)
     sorted_mse_results = sorted(mse_results)
-
-    # Show each of the worst X fits
-    for result in sorted_mse_results[-10:]:
-        mae.reset_state()
-        mae.update_state(ground_test[result[1]], predictions[result[1]])
-
-        # Plot PCr
-        plt.plot(ground_test[result[1], :, 1])
-        plt.title(setup["name"] + " PCr, MAE = " + str(np.round(mae.result().numpy(), 3)))
-        plt.plot(predictions[result[1], :, 1])
-        plt.legend(["ground truth", "sample"])
-        plt.show()
-
-        # Plot Pii
-        plt.plot(ground_test[result[1], :, 0])
-        plt.title(setup["name"] + " Pii, MAE = " + str(np.round(mae.result().numpy(), 3)))
-        plt.plot(predictions[result[1], :, 0])
-        plt.legend(["ground truth", "sample"])
-        plt.show()
-
-    # plt.title('Worst fits')
-    # plt.show()
-
-    # # Show each of the best X fits
-    # for result in sorted_mse_results[:10]:
-    #     mae.reset_state()
-    #     mae.update_state(ground_test[result[1]], predictions[result[1]])
     #
-    #     # Plot PCr
-    #     plt.plot(ground_test[result[1], :, 1])
-    #     plt.title(setup["name"] + " PCr, MAE = " + str(np.round(mae.result().numpy(), 3)))
-    #     plt.plot(predictions[result[1], :, 1])
-    #     plt.legend(["ground truth", "sample"])
-    #     plt.show()
-    #
-    #     # Plot Pii
-    #     plt.plot(ground_test[result[1], :, 0])
-    #     plt.title(setup["name"] + " Pii, MAE = " + str(np.round(mae.result().numpy(), 3)))
-    #     plt.plot(predictions[result[1], :, 0])
-    #     plt.legend(["ground truth", "sample"])
-    #     plt.show()
+    # # Plot best and worst fits
+    # plot_pcr_subset(sorted_mse_results[:10], ground_test, "Best fits")
+    # plot_pcr_subset(sorted_mse_results[-10:], ground_test, "Worst fits")
 
-    # plt.title('Best fits')
-    # plt.show()
+    noise_levels = [compute_noise_metric(dp) for dp in data_test]
+    mse_scores = [result[0] for result in mse_results]
+
+    plot_mse_vs_noise(mse_scores, noise_levels)
