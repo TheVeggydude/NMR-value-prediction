@@ -58,9 +58,9 @@ def plot_mse_vs_noise(mse, noise):
 
 
 setup = {
-            "name": "1D_cnn_simple_kernel16",
-            "dataset": "2022-02-19T16_52_00",
-            "dimensions": ((301, 2), (301, 512, 1)),
+            "name": "1d_cnn_v1_proc",
+            "dataset": "simple_simulation_raw",
+            "dimensions": ((301, 2), (301, 512)),
             "batch_size": 32,
             "runs": 10
         }
@@ -96,12 +96,12 @@ if __name__ == '__main__':
     # Valuate results
     mse_results = compute_mse(predictions)
     sorted_mse_results = sorted(mse_results)
+
+    # Plot best and worst fits
+    plot_pcr_subset(sorted_mse_results[:10], ground_test, "Best fits")
+    plot_pcr_subset(sorted_mse_results[-10:], ground_test, "Worst fits")
+
+    # noise_levels = [compute_noise_metric(dp) for dp in data_test]
+    # mse_scores = [result[0] for result in mse_results]
     #
-    # # Plot best and worst fits
-    # plot_pcr_subset(sorted_mse_results[:10], ground_test, "Best fits")
-    # plot_pcr_subset(sorted_mse_results[-10:], ground_test, "Worst fits")
-
-    noise_levels = [compute_noise_metric(dp) for dp in data_test]
-    mse_scores = [result[0] for result in mse_results]
-
-    plot_mse_vs_noise(mse_scores, noise_levels)
+    # plot_mse_vs_noise(mse_scores, noise_levels)
