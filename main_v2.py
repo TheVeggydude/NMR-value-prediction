@@ -2,7 +2,6 @@ import reader
 import preprocessing
 import models
 import matplotlib.pyplot as plt
-import numpy as np
 import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
@@ -156,11 +155,11 @@ if __name__ == '__main__':
             model = None
 
             if setup["type"] == "mlp":
-                model = models.mlp
+                model = models.mlp.mlp
             elif setup["type"] == "cnn":
                 model = models.cnn
             elif setup["type"] == "hybrid":
-                model = models.hybrid
+                model = models.hybrid.hybrid
 
             model = model.create_model(
                 setup["dimensions"][0],

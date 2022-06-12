@@ -91,6 +91,20 @@ setups = [
     #     "runs": 10
     # },
     {
+        "name": "1d_cnn_simple_kernel16",
+        "dataset": "2022-02-19T16_52_00",
+
+        "model": models.cnn_1d.v1.create_model,
+        "options": {
+            "input_shape": (301, 512),
+            "kernel_size": 16
+        },
+
+        "batch_size": 32,
+        "epochs": 10000,
+        "runs": 10
+    },
+    {
         "name": "1d_cnn_batch_kernel16",
         "dataset": "2022-02-19T16_52_00",
         "type": "cnn_api_batch",
@@ -157,33 +171,7 @@ if __name__ == '__main__':
             # Create model
             ###
 
-            model = None
-
-            if setup["type"] == "mlp":
-                model = models.mlp
-
-            elif setup["type"] == "cnn":
-                model = models.cnn
-
-            elif setup["type"] == "hybrid":
-                model = models.hybrid
-
-            elif setup["type"] == "cnn_api":
-                model = models.cnn_api
-
-            elif setup["type"] == "cnn_api_batch":
-                model = models.cnn_api_batch
-
-            if setup["type"] in ["cnn_api", "cnn_api_batch"]:
-                model = model.create_model(setup["dimensions"][1])
-
-            else:
-                model = model.create_model(
-                    setup["dimensions"][0],
-                    setup["dimensions"][1],
-                    v=setup["v"],
-                    n_rep=setup['n_rep']
-                )
+            model = setup["model"](setup['options'])
 
             model.compile(
                 loss="mean_squared_error",

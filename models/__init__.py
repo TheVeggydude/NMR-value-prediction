@@ -1,5 +1,7 @@
-from . import cnn
-from . import mlp
-from . import hybrid
-from . import cnn_api
-from . import cnn_api_batch
+import cnn_1d
+import cnn_2d
+import cnn
+
+import mlp
+
+import hybrid

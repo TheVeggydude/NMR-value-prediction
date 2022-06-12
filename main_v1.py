@@ -1,7 +1,6 @@
 import models
 import reader
 import numpy as np
-import matplotlib.pyplot as plt
 import preprocessing
 
 from sklearn.model_selection import train_test_split
@@ -52,7 +51,7 @@ if __name__ == '__main__':
         model = None
 
         if model_type == "MLP":
-            model = models.mlp.create_model(truth_shape)
+            model = models.mlp.mlp.create_model(truth_shape)
         elif model_type == "CNN":
             model = models.cnn.create_model(truth_shape)
 
