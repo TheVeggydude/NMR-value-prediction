@@ -56,7 +56,10 @@ if __name__ == '__main__':
     batches[K-1] = batches[K-1] + leftovers
 
     print("Preprocessing")
-    data_processed, ground_processed = preprocessing.preprocess(data, ground)
+    data_processed = data.copy()
+    ground_processed = ground.copy()
+
+    data_processed, ground_processed = preprocessing.preprocess(data_processed, ground_processed)
 
     for key, value in batches.items():
 
