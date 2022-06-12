@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     create_model(
         {
-            "input_shape": (301, 512)
+            "input_shape": (301, 512),
+            "kernel_size": 16
         }
     )
-
