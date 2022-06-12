@@ -90,9 +90,18 @@ setups = [
     #     "epochs": 10000,
     #     "runs": 10
     # },
+    # {
+    #     "name": "1d_cnn_batch_kernel16",
+    #     "dataset": "2022-02-19T16_52_00",
+    #     "type": "cnn_api_batch",
+    #     "dimensions": ((301, 2), (301, 512)),
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
     {
-        "name": "1d_cnn_simple_kernel16",
-        "dataset": "2022-02-19T16_52_00",
+        "name": "1d_cnn_v1_raw",
+        "dataset": "simple_simulation_raw",
 
         "model": models.cnn_1d.v1.create_model,
         "options": {
@@ -102,16 +111,21 @@ setups = [
 
         "batch_size": 32,
         "epochs": 10000,
-        "runs": 10
+        "runs": 1
     },
     {
-        "name": "1d_cnn_batch_kernel16",
-        "dataset": "2022-02-19T16_52_00",
-        "type": "cnn_api_batch",
-        "dimensions": ((301, 2), (301, 512)),
+        "name": "1d_cnn_v1_proc",
+        "dataset": "simple_simulation_proc",
+
+        "model": models.cnn_1d.v1.create_model,
+        "options": {
+            "input_shape": (301, 512),
+            "kernel_size": 16
+        },
+
         "batch_size": 32,
         "epochs": 10000,
-        "runs": 10
+        "runs": 1
     },
 ]
 
@@ -141,7 +155,7 @@ if __name__ == '__main__':
         ])
 
         # Prep dataset for 2D CNN
-        if len(setup['dimensions'][1]) == 3:
+        if len(setup['options']['input_shape']) == 3:
             data = np.expand_dims(data, 4)
 
         ###
@@ -164,8 +178,8 @@ if __name__ == '__main__':
             ground_train = np.delete(ground, [run, val_idx], 0)
 
             # Reshape data to form one continuous array of data points
-            data_train = np.reshape(data_train, (-1, ) + setup['dimensions'][1])
-            ground_train = np.reshape(ground_train, (-1, ) + setup['dimensions'][0])
+            data_train = np.reshape(data_train, (-1, ) + setup['options']['input_shape'])
+            ground_train = np.reshape(ground_train, (-1, 301, 2))
 
             ###
             # Create model
