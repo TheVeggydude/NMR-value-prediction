@@ -14,10 +14,6 @@ if __name__ == '__main__':
     data = reader.read_dat('simulation\\datasets\\' + dataset + '_dataset.dat', (-1, 512, 301))
     ground = reader.read_dat('simulation\\datasets\\' + dataset + '_ground_truth.dat', (-1, 2, 301))
 
-    print("Preprocessing")
-
-    data, ground = preprocessing.preprocess(data, ground)
-
     print("Splitting dataset")
 
     # Track indices
@@ -46,6 +42,15 @@ if __name__ == '__main__':
     # Add leftovers to the last batch
     batches[K-1] = batches[K-1] + leftovers
 
+    print("Preprocessing")
+    data_processed, ground_processed = preprocessing.preprocess(data, ground)
+
     for key, value in batches.items():
+
+        # Store unprocessed batches
         np.save('simulation\\datasets\\' + dataset + "_dataset_batch" + str(key), data[value])
         np.save('simulation\\datasets\\' + dataset + "_ground_truth_batch" + str(key), ground[value])
+
+        # Store processed batches
+        np.save('simulation\\datasets\\' + dataset + "_dataset_proc_batch" + str(key), data_processed[value])
+        np.save('simulation\\datasets\\' + dataset + "_ground_truth_proc_batch" + str(key), ground_processed[value])
