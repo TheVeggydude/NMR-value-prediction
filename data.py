@@ -14,6 +14,19 @@ if __name__ == '__main__':
     data = reader.read_dat('simulation\\datasets\\' + dataset + '_data.dat', (-1, 512, 301))
     ground = reader.read_dat('simulation\\datasets\\' + dataset + '_ground_truth.dat', (-1, 2, 301))
 
+    # Transpose the np arrays to the desired format
+    data = np.asarray([
+        preprocessing.as_absolute(  # make complex values absolute.
+            np.transpose(exp)  # transpose experiments.
+        ) for exp in data
+    ])
+
+    ground = np.asarray([
+        preprocessing.as_absolute(  # make complex values absolute.
+            np.transpose(exp)  # transpose experiments.
+        ) for exp in ground
+    ])
+
     print("Splitting dataset")
 
     # Track indices
