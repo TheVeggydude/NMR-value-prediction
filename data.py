@@ -48,9 +48,9 @@ if __name__ == '__main__':
     for key, value in batches.items():
 
         # Store unprocessed batches
-        np.save('simulation\\datasets\\' + dataset + "_dataset_raw_batch" + str(key), data[value])
-        np.save('simulation\\datasets\\' + dataset + "_ground_truth_raw_batch" + str(key), ground[value])
+        np.save('simulation\\datasets\\' + dataset + "_raw_dataset_batch" + str(key), data[value])
+        np.save('simulation\\datasets\\' + dataset + "_raw_ground_truth_batch" + str(key), ground[value])
 
         # Store processed batches
-        np.save('simulation\\datasets\\' + dataset + "_dataset_proc_batch" + str(key), data_processed[value])
-        np.save('simulation\\datasets\\' + dataset + "_ground_truth_proc_batch" + str(key), ground_processed[value])
+        np.save('simulation\\datasets\\' + dataset + "_proc_dataset_batch" + str(key), data_processed[value])
+        np.save('simulation\\datasets\\' + dataset + "_proc_ground_truth_batch" + str(key), ground_processed[value])
