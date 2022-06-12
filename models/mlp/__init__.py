@@ -1,1 +1,1 @@
-import mlp
+from . import mlp

@@ -1,7 +1,7 @@
-import cnn_1d
-import cnn_2d
-import cnn
+from . import cnn_1d
+from . import cnn_2d
+from . import cnn
 
-import mlp
+from . import mlp
 
-import hybrid
+from . import hybrid
