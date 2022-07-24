@@ -10,23 +10,16 @@ def create_model(options):
     # First Conv2D block
     model.add(
         layers.Conv2D(
-            filters=32,
-            kernel_size=64,
-            activation='relu',
-            strides=(1, 32),
+            filters=2,
+            kernel_size=(16, 512),
+            strides=(1, 512),
             padding='same'
         )
     )
 
-    model.add(
-        layers.Conv2D(
-            filters=1,
-            kernel_size=16,
-            activation='relu',
-            strides=(1, 8),
-            padding='same'
-        )
-    )
+    model.add(layers.Reshape((301, 2, 1)))
+
+    model.add(layers.Activation('elu'))
 
     model.summary()
     return model
