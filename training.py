@@ -99,33 +99,159 @@ setups = [
     #     "epochs": 10000,
     #     "runs": 10
     # },
+    # {
+    #     "name": "1d_cnn_v1_raw",
+    #     "dataset": "simple_simulation_raw",
+    #
+    #     "model": models.cnn_1d.v1.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 16
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v1_proc",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v1.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 16
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v2",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v2.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 16
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v3",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v3.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 16
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v4",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v4.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 16
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v7",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v7.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 16
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v4_k32",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v4.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 32
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v4_k64",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v4.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 64
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v5",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v5.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 16
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
+    # {
+    #     "name": "1d_cnn_v6",
+    #     "dataset": "simple_simulation_proc",
+    #
+    #     "model": models.cnn_1d.v6.create_model,
+    #     "options": {
+    #         "input_shape": (301, 512),
+    #         "kernel_size": 32
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
     {
-        "name": "1d_cnn_v1_raw",
-        "dataset": "simple_simulation_raw",
-
-        "model": models.cnn_1d.v1.create_model,
-        "options": {
-            "input_shape": (301, 512),
-            "kernel_size": 16
-        },
-
-        "batch_size": 32,
-        "epochs": 10000,
-        "runs": 1
-    },
-    {
-        "name": "1d_cnn_v1_proc",
+        "name": "2d_cnn_v2",
         "dataset": "simple_simulation_proc",
 
-        "model": models.cnn_1d.v1.create_model,
+        "model": models.cnn_2d.v2.create_model,
         "options": {
-            "input_shape": (301, 512),
-            "kernel_size": 16
+            "input_shape": (301, 512, 1),
+            "kernel_size": 32
         },
 
         "batch_size": 32,
         "epochs": 10000,
-        "runs": 1
+        "runs": 10
     },
 ]
 
