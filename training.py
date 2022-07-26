@@ -240,19 +240,35 @@ setups = [
     #     "runs": 10
     # },
     {
-        "name": "2d_cnn_v2",
+        "name": "2d_cnn_v3",
         "dataset": "simple_simulation_proc",
 
-        "model": models.cnn_2d.v2.create_model,
+        "model": models.cnn_2d.v3.create_model,
         "options": {
-            "input_shape": (301, 512, 1),
-            "kernel_size": 32
+            # 'filters': 1,
+            'input_shape': (301, 512, 1),
+            'output_shape': (301, 2, 1),
         },
 
         "batch_size": 32,
         "epochs": 10000,
         "runs": 10
     },
+    # {
+    #     "name": "2d_cnn_v4_cropped",
+    #     "dataset": "simple_simulation_proc_cropped",
+    #
+    #     "model": models.cnn_2d.v4.create_model,
+    #     "options": {
+    #         'filters': 2,
+    #         'input_shape': (301, 55, 1),
+    #         'output_shape': (301, 2, 1),
+    #     },
+    #
+    #     "batch_size": 32,
+    #     "epochs": 10000,
+    #     "runs": 10
+    # },
 ]
 
 K = 10
@@ -268,17 +284,8 @@ if __name__ == '__main__':
         # Data loading
         ###
 
-        data = np.asarray([
-            np.load(
-                'simulation\\datasets\\' + setup['dataset'] + '_dataset_batch' + str(i) + '.npy'
-            ) for i in range(K)
-        ])
-
-        ground = np.asarray([
-            np.load(
-                'simulation\\datasets\\' + setup['dataset'] + '_ground_truth_batch' + str(i) + '.npy'
-            ) for i in range(K)
-        ])
+        data = np.load('simulation\\datasets\\' + setup['dataset'] + '_dataset.npy')
+        ground = np.load('simulation\\datasets\\' + setup['dataset'] + '_ground_truth.npy')
 
         # Prep dataset for 2D CNN
         if len(setup['options']['input_shape']) == 3:
@@ -305,7 +312,7 @@ if __name__ == '__main__':
 
             # Reshape data to form one continuous array of data points
             data_train = np.reshape(data_train, (-1, ) + setup['options']['input_shape'])
-            ground_train = np.reshape(ground_train, (-1, 301, 2))
+            ground_train = np.reshape(ground_train, (-1, ) + setup['options']['output_shape'])
 
             ###
             # Create model

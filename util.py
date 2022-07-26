@@ -34,13 +34,11 @@ def load_batch_setup_and_eval(setup, run):
     model.summary()
 
     # Load data
-    data_test = np.load(
-        'simulation\\datasets\\' + setup['dataset'] + '_dataset_batch' + str(run) + '.npy'
-    )
+    data_test = np.load('simulation\\datasets\\' + setup['dataset'] + '_dataset.npy')
+    ground_test = np.load('simulation\\datasets\\' + setup['dataset'] + '_ground_truth.npy')
 
-    ground_test = np.load(
-        'simulation\\datasets\\' + setup['dataset'] + '_ground_truth_batch' + str(run) + '.npy'
-    )
+    data_test = data_test[run]
+    ground_test = ground_test[run]
 
     # Prep dataset for 2D CNN
     if len(model.layers[0].output_shape[1:]) == 3:
