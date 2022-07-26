@@ -10,14 +10,44 @@ def create_model(options):
     # First Conv2D block
     model.add(
         layers.Conv2D(
-            filters=2,
+            filters=32,
             kernel_size=20,
             strides=1,
             padding='same'
         )
     )
 
-    # model.add(layers.Reshape((301, 2, 1)))
+    model.add(layers.Activation('elu'))
+
+    model.add(
+        layers.MaxPooling2D((1, 16))
+    )
+
+    # Second Conv2D block
+    model.add(
+        layers.Conv2D(
+            filters=16,
+            kernel_size=10,
+            strides=1,
+            padding='same'
+        )
+    )
+
+    model.add(layers.Activation('elu'))
+
+    model.add(
+        layers.MaxPooling2D((1, 12))
+    )
+
+    # Third Conv2D block
+    model.add(
+        layers.Conv2D(
+            filters=1,
+            kernel_size=10,
+            strides=1,
+            padding='same'
+        )
+    )
 
     model.add(layers.Activation('elu'))
 
