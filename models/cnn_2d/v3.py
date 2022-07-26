@@ -57,18 +57,33 @@ def create_model(options):
 
 if __name__ == '__main__':
 
-    # First version of v3 - DO NOT REMOVE
     create_model(
         {
             'input_shape': (301, 512, 1),
             'filters': [
-                32,
-                16
+                64,
+                32
             ],
             'kernels': [
-                (20, 20),
+                (10, 24),
                 (10, 10),
-                (10, 10),
+                (10, 2),
             ]
         }
     )
+
+    # First version of v3 - DO NOT REMOVE
+    # create_model(
+    #     {
+    #         'input_shape': (301, 512, 1),
+    #         'filters': [
+    #             32,
+    #             16
+    #         ],
+    #         'kernels': [
+    #             (20, 20),
+    #             (10, 10),
+    #             (10, 10),
+    #         ]
+    #     }
+    # )
