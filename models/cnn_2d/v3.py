@@ -10,8 +10,8 @@ def create_model(options):
     # First Conv2D block
     model.add(
         layers.Conv2D(
-            filters=32,
-            kernel_size=20,
+            filters=options['filters'][0],
+            kernel_size=options['kernels'][0],
             strides=1,
             padding='same'
         )
@@ -26,8 +26,8 @@ def create_model(options):
     # Second Conv2D block
     model.add(
         layers.Conv2D(
-            filters=16,
-            kernel_size=10,
+            filters=options['filters'][1],
+            kernel_size=options['kernels'][1],
             strides=1,
             padding='same'
         )
@@ -43,7 +43,7 @@ def create_model(options):
     model.add(
         layers.Conv2D(
             filters=1,
-            kernel_size=10,
+            kernel_size=options['kernels'][2],
             strides=1,
             padding='same'
         )
@@ -56,8 +56,19 @@ def create_model(options):
 
 
 if __name__ == '__main__':
+
+    # First version of v3 - DO NOT REMOVE
     create_model(
         {
-            'input_shape': (301, 512, 1)
+            'input_shape': (301, 512, 1),
+            'filters': [
+                32,
+                16
+            ],
+            'kernels': [
+                (20, 20),
+                (10, 10),
+                (10, 10),
+            ]
         }
     )
