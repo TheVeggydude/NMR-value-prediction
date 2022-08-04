@@ -13,14 +13,15 @@ def create_model(options):
             filters=options['filters'][0],
             kernel_size=options['kernels'][0],
             strides=1,
-            padding='same'
+            padding='same',
+            activation='elu'
         )
     )
 
-    model.add(layers.Activation('elu'))
+    model.add(layers.BatchNormalization())
 
     model.add(
-        layers.MaxPooling2D((1, 16))
+        layers.MaxPooling2D((1, 8))
     )
 
     # Second Conv2D block
@@ -29,27 +30,44 @@ def create_model(options):
             filters=options['filters'][1],
             kernel_size=options['kernels'][1],
             strides=1,
-            padding='same'
+            padding='same',
+            activation='elu'
         )
     )
 
-    model.add(layers.Activation('elu'))
+    model.add(layers.BatchNormalization())
 
     model.add(
-        layers.MaxPooling2D((1, 12))
+        layers.MaxPooling2D((1, 8))
     )
 
     # Third Conv2D block
     model.add(
         layers.Conv2D(
-            filters=1,
+            filters=options['filters'][2],
             kernel_size=options['kernels'][2],
             strides=1,
-            padding='same'
+            padding='same',
+            activation='elu'
         )
     )
 
-    model.add(layers.Activation('elu'))
+    model.add(layers.BatchNormalization())
+
+    model.add(
+        layers.MaxPooling2D((1, 4))
+    )
+
+    # Fourth Conv2D block
+    model.add(
+        layers.Conv2D(
+            filters=1,
+            kernel_size=options['kernels'][3],
+            strides=1,
+            padding='same',
+            activation='elu'
+        )
+    )
 
     model.summary()
     return model
@@ -63,11 +81,12 @@ if __name__ == '__main__':
             'filters': [
                 16,
                 8,
-                2
+                4
             ],
             'kernels': [
                 (10, 24),
                 (10, 10),
+                (10, 2),
                 (10, 2),
             ]
         }

@@ -17,7 +17,9 @@ def create_model(options):
         )
     )
 
-    model.add(layers.Activation('elu'))
+    model.add(layers.BatchNormalization())
+
+    model.add(layers.Activation('sigmoid'))
 
     model.add(
         layers.MaxPooling2D((1, 16))
@@ -33,7 +35,9 @@ def create_model(options):
         )
     )
 
-    model.add(layers.Activation('elu'))
+    model.add(layers.BatchNormalization())
+
+    model.add(layers.Activation('sigmoid'))
 
     model.add(
         layers.MaxPooling2D((1, 12))
@@ -62,8 +66,7 @@ if __name__ == '__main__':
             'input_shape': (301, 512, 1),
             'filters': [
                 16,
-                8,
-                2
+                8
             ],
             'kernels': [
                 (10, 24),

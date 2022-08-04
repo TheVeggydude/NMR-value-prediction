@@ -13,11 +13,12 @@ def create_model(options):
             filters=options['filters'][0],
             kernel_size=options['kernels'][0],
             strides=1,
-            padding='same'
+            padding='same',
+            activation='elu'
         )
     )
 
-    model.add(layers.Activation('elu'))
+    model.add(layers.BatchNormalization())
 
     model.add(
         layers.MaxPooling2D((1, 16))
@@ -29,11 +30,12 @@ def create_model(options):
             filters=options['filters'][1],
             kernel_size=options['kernels'][1],
             strides=1,
-            padding='same'
+            padding='same',
+            activation='elu'
         )
     )
 
-    model.add(layers.Activation('elu'))
+    model.add(layers.BatchNormalization())
 
     model.add(
         layers.MaxPooling2D((1, 12))
@@ -45,11 +47,10 @@ def create_model(options):
             filters=1,
             kernel_size=options['kernels'][2],
             strides=1,
-            padding='same'
+            padding='same',
+            activation='elu'
         )
     )
-
-    model.add(layers.Activation('elu'))
 
     model.summary()
     return model
@@ -62,8 +63,7 @@ if __name__ == '__main__':
             'input_shape': (301, 512, 1),
             'filters': [
                 16,
-                8,
-                2
+                8
             ],
             'kernels': [
                 (10, 24),
