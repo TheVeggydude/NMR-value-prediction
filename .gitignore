@@ -135,3 +135,6 @@ Data
 *.dat
 *.gif
 *.jpg
+
+saved_models
+simulation/datasets
