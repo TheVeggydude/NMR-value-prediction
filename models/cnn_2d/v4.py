@@ -15,14 +15,28 @@ def create_model(options):
     # First Conv2D block
     model.add(
         layers.Conv2D(
-            filters=options['filters'],
-            kernel_size=(16, options['input_shape'][1]),
-            strides=(1, options['input_shape'][1]),
+            filters=options['filters'][0],
+            kernel_size=options['kernels'][0],
+            strides=1,
             padding='same'
         )
     )
 
-    model.add(layers.Reshape(options['output_shape']))
+    model.add(layers.Activation('elu'))
+
+    model.add(
+        layers.MaxPooling2D((1, 256))
+    )
+
+    # Second Conv2D block
+    model.add(
+        layers.Conv2D(
+            filters=options['filters'][1],
+            kernel_size=options['kernels'][1],
+            strides=1,
+            padding='same'
+        )
+    )
 
     model.add(layers.Activation('elu'))
 
@@ -33,8 +47,14 @@ def create_model(options):
 if __name__ == '__main__':
     create_model(
         {
-            'filters': 2,
-            'input_shape': (301, 55, 1),
-            'output_shape': (301, 2, 1),
+            'input_shape': (301, 512, 1),
+            'filters': [
+                256,
+                1,
+            ],
+            'kernels': [
+                (10, 24),
+                (10, 2),
+            ]
         }
     )

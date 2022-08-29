@@ -79,9 +79,9 @@ if __name__ == '__main__':
         {
             'input_shape': (301, 512, 1),
             'filters': [
+                32,
                 16,
-                8,
-                4
+                8
             ],
             'kernels': [
                 (10, 24),

@@ -10,22 +10,16 @@ def create_model(options):
     # First Conv2D block
     model.add(
         layers.Conv2D(
-            filters=32,
-            kernel_size=64,
-            activation='relu',
-            strides=(1, 32),
+            filters=1,
+            kernel_size=(10, 24),
+            activation='elu',
+            strides=1,
             padding='same'
         )
     )
 
     model.add(
-        layers.Conv2D(
-            filters=1,
-            kernel_size=16,
-            activation='relu',
-            strides=(1, 8),
-            padding='same'
-        )
+        layers.MaxPooling2D((1, 256))
     )
 
     model.summary()

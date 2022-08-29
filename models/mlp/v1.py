@@ -24,6 +24,7 @@ if __name__ == '__main__':
         {
             'input_shape': (301, 512, 1),
             'output_shape': (301, 2, 1),
-            'n': 6
+            'n': 10,
+            'learning_rate': 0.001,
         }
     )
