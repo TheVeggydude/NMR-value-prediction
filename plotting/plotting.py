@@ -2,9 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_input(datapoint):
+def plot_input(datapoint, title=""):
 
     plt.imshow(np.array(datapoint), interpolation='nearest')
+    plt.title(title)
     plt.show()
 
 
@@ -17,7 +18,7 @@ def plot_pcr_subset(subset, ground, title, use_legend=True):
         # Plot PCr
         plt.plot(ground[item[1], :, 1])
         legend.append(
-            "[" + str(item[1]) + "]: " + str(round(item[0], 4)) + " (" + format(item[2], '.1E') + ")"
+            "[" + str(item[1]) + "]: " + str(round(item[0], 4))
         )
 
     plt.title(title)
@@ -27,7 +28,7 @@ def plot_pcr_subset(subset, ground, title, use_legend=True):
     plt.show()
 
 
-def plot_prediction_and_ground(pred, ground, title, name, comparison=None, comp_name=None):
+def plot_ground_pcr_pii(pred, ground, title, name, comparison=None, comp_name=None):
     legend = ["Ground Pii", "Ground PCR", name + " Pii", name + " PCR"]
 
     if len(pred.shape) == 3:
@@ -51,11 +52,25 @@ def plot_prediction_and_ground(pred, ground, title, name, comparison=None, comp_
     plt.show()
 
 
-def plot_mse_vs_noise(mse, noise):
-    plt.scatter(mse, noise)
+def plot_scatter(x, y, title="", x_label="", y_label=""):
+    """
+    Plots a matplotlib.pyplot.scatter using the provided data.
 
-    plt.title("MSE score vs noise level")
-    plt.xlabel("MSE")
-    plt.ylabel("Noise")
+        Parameters:
+            x ([number]): list of numbers to be plotted along the x-axis
+            y ([number]): list of numbers to be plotted along the y-axis
+            title (str): string for the title of the plot
+            x_label (str): string for the x-axis unit
+            y_label (str): string for the y-axis unit
+
+        Returns:
+            None
+    """
+
+    plt.scatter(x, y)
+
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
 
     plt.show()
