@@ -3,7 +3,7 @@ import reader
 import preprocessing
 import numpy as np
 
-dataset = "simple_simulation"
+dataset = "lw_90_120"
 K = 10
 
 if __name__ == '__main__':
@@ -13,6 +13,7 @@ if __name__ == '__main__':
     # Data loading & preprocessing
     data = reader.read_dat('simulation\\datasets\\' + dataset + '_data.dat', (-1, 512, 301))
     ground = reader.read_dat('simulation\\datasets\\' + dataset + '_ground_truth.dat', (-1, 2, 301))
+    params = reader.read_dat('simulation\\datasets\\' + dataset + '_params.dat', (-1, 8))
 
     # Transpose the np arrays to the desired format
     data = np.asarray([
@@ -63,10 +64,36 @@ if __name__ == '__main__':
 
     for key, value in batches.items():
 
-        # Store unprocessed batches
-        np.save('simulation\\datasets\\' + dataset + "_raw_dataset_batch" + str(key), data[value])
-        np.save('simulation\\datasets\\' + dataset + "_raw_ground_truth_batch" + str(key), ground[value])
+        # # Store unprocessed batches
+        # np.save('simulation\\datasets\\' + dataset + "_raw_dataset_batch" + str(key), data[value])
+        # np.save('simulation\\datasets\\' + dataset + "_raw_ground_truth_batch" + str(key), ground[value])
+        # np.save('simulation\\datasets\\' + dataset + "_raw_params_batch" + str(key), params[value])
 
         # Store processed batches
-        np.save('simulation\\datasets\\' + dataset + "_proc_dataset_batch" + str(key), data_processed[value])
-        np.save('simulation\\datasets\\' + dataset + "_proc_ground_truth_batch" + str(key), ground_processed[value])
+        np.save('simulation\\datasets\\' + dataset + "_dataset_batch" + str(key), data_processed[value])
+        np.save('simulation\\datasets\\' + dataset + "_ground_truth_batch" + str(key), ground_processed[value])
+        np.save('simulation\\datasets\\' + dataset + "_params_batch" + str(key), params[value])
+
+    # Dataset loading
+    data = np.asarray([
+        np.load(
+            'simulation\\datasets\\' + dataset + '_dataset_batch' + str(i) + '.npy'
+        ) for i in range(K)
+    ])
+
+    ground = np.asarray([
+        np.load(
+            'simulation\\datasets\\' + dataset + '_ground_truth_batch' + str(i) + '.npy'
+        ) for i in range(K)
+    ])
+
+    params = np.asarray([
+        np.load(
+            'simulation\\datasets\\' + dataset + '_params_batch' + str(i) + '.npy'
+        ) for i in range(K)
+    ])
+
+    # Store new, collected, numpy array
+    np.save('simulation\\datasets\\' + dataset + "_dataset", data)
+    np.save('simulation\\datasets\\' + dataset + "_ground_truth", ground)
+    np.save('simulation\\datasets\\' + dataset + "_params", params)
