@@ -5,7 +5,7 @@ import tensorflow as tf
 def compute_noise_metric(datapoint):
 
     roi = datapoint[:, : 200]
-    return np.var(roi)
+    return np.mean(roi)
 
 
 def compute_mse(predictions, ground_test, noises=None):
@@ -19,6 +19,7 @@ def compute_mse(predictions, ground_test, noises=None):
         mse.update_state(ground_test[index], prediction)
 
         result = (mse.result().numpy(), index)
+
         if noises is not None:
             result = (mse.result().numpy(), index, noises[index])
 
@@ -36,20 +37,21 @@ def load_batch_setup_and_eval(setup, run):
     # Load data
     data_test = np.load('simulation\\datasets\\' + setup['dataset'] + '_dataset.npy')
     ground_test = np.load('simulation\\datasets\\' + setup['dataset'] + '_ground_truth.npy')
+    sim_params = np.load('simulation\\datasets\\' + setup['dataset'] + '_params.npy')
 
     data_test = data_test[run]
     ground_test = ground_test[run]
+    sim_params = sim_params[run]
 
     # Prep dataset for 2D CNN
     if len(model.layers[0].output_shape[1:]) == 3:
         data_test = np.expand_dims(data_test, 3)
 
-    # Evaluate model
-    eval_score = model.evaluate(data_test, ground_test, batch_size=setup["batch_size"])
-
     # Generate predictions
     predictions = model.predict(data_test)
 
-    noises = [compute_noise_metric(dp) for dp in data_test]
+    trainable_params = np.sum([np.prod(v.get_shape()) for v in model.trainable_weights])
+    non_trainable_params = np.sum([np.prod(v.get_shape()) for v in model.non_trainable_weights])
+    total_params = trainable_params + non_trainable_params
 
-    return data_test, ground_test, model, eval_score, predictions, noises
+    return data_test, ground_test, predictions, sim_params, total_params
