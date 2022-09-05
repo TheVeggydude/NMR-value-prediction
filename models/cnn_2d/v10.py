@@ -20,26 +20,10 @@ def create_model(options):
         )
 
     model.add(
-        layers.MaxPooling2D((1, 16))
+        layers.MaxPooling2D((1, 256))
     )
 
     # Second Conv2D block
-    for _ in range(options['block_length']):
-        model.add(
-            layers.Conv2D(
-                filters=options['filters'][1],
-                kernel_size=options['kernels'][1],
-                strides=1,
-                padding='same',
-                activation='tanh'
-            )
-        )
-
-    model.add(
-        layers.MaxPooling2D((1, 12))
-    )
-
-    # Third Conv2D block
     for _ in range(options['block_length']):
         model.add(
             layers.Conv2D(
@@ -62,11 +46,10 @@ if __name__ == '__main__':
             'input_shape': (301, 512, 1),
             'filters': [
                 32,
-                16,
+                1,
             ],
             'kernels': [
                 (10, 24),
-                (10, 10),
                 (10, 2),
             ],
             'block_length': 2
