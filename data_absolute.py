@@ -6,17 +6,6 @@ import numpy as np
 dataset = "imag"
 K = 10
 
-
-def imaginary_split(dp):
-    return dp.real, dp.imag
-
-
-def transform(exp):
-    np.transpose(exp)
-
-    return np.stack(np.vectorize(imaginary_split)(exp), axis=2)
-
-
 if __name__ == '__main__':
 
     print("Reading data from: '" + dataset + "'")
@@ -28,15 +17,16 @@ if __name__ == '__main__':
 
     # Transpose the np arrays to the desired format
     data = np.asarray([
-        np.transpose(exp)  # transpose experiments.
-        for exp in data
+        preprocessing.as_absolute(  # make complex values absolute.
+            np.transpose(exp)  # transpose experiments.
+        ) for exp in data
     ])
-    data = np.stack(np.vectorize(imaginary_split)(data), axis=3)  # split the complex type into two floats.
 
     ground = np.asarray([
-        np.transpose(exp)  # transpose experiments.
-        for exp in ground
-    ]).real
+        preprocessing.as_absolute(  # make complex values absolute.
+            np.transpose(exp)  # transpose experiments.
+        ) for exp in ground
+    ])
 
     print("Splitting dataset")
 
@@ -58,13 +48,13 @@ if __name__ == '__main__':
     # Divide idx into K batches
     batches = {}
     for i in range(K):
-        start_pos = int(i * (len(idx) / K))
-        end_pos = int((i + 1) * (len(idx) / K))
+        start_pos = int(i * (len(idx)/K))
+        end_pos = int((i+1) * (len(idx)/K))
 
         batches[i] = idx[start_pos: end_pos]
 
     # Add leftovers to the last batch
-    batches[K - 1] = batches[K - 1] + leftovers
+    batches[K-1] = batches[K-1] + leftovers
 
     print("Preprocessing")
     data_processed = data.copy()
@@ -85,6 +75,6 @@ if __name__ == '__main__':
     ])
 
     # Store new, collected, numpy array
-    np.save('simulation\\datasets\\' + dataset + "_dataset", data_batched)
-    np.save('simulation\\datasets\\' + dataset + "_ground_truth", ground_batched)
-    np.save('simulation\\datasets\\' + dataset + "_params", params_batched)
+    np.save('simulation\\datasets\\' + dataset + "_abs_dataset", data_batched)
+    np.save('simulation\\datasets\\' + dataset + "_abs_ground_truth", ground_batched)
+    np.save('simulation\\datasets\\' + dataset + "_abs_params", params_batched)
