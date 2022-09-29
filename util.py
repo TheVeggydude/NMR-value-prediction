@@ -44,7 +44,7 @@ def load_batch_setup_and_eval(setup, run):
     sim_params = sim_params[run]
 
     # Prep dataset for 2D CNN
-    if len(model.layers[0].output_shape[1:]) == 3:
+    if len(model.layers[0].output_shape[1:]) == 3 and "imag" not in setup["name"]:
         data_test = np.expand_dims(data_test, 3)
 
     # Generate predictions
