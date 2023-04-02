@@ -2,10 +2,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_input(datapoint, title=""):
+def index_to_ppm(i, ref):
+    ppm = (i - ref)/ref
+    
+    return ppm
 
-    plt.imshow(np.array(datapoint), interpolation='nearest')
+
+def plot_input(datapoint, title="", axis=0):
+
+    plt.imshow(np.array(datapoint[:, :, axis]), interpolation='nearest')
     plt.title(title)
+    plt.ylabel("Time steps")
+    plt.xlabel("Frequency distribution")
     plt.show()
 
 
@@ -28,8 +36,8 @@ def plot_pcr_subset(subset, ground, title, use_legend=True):
     plt.show()
 
 
-def plot_ground_pcr_pii(pred, ground, title, name, comparison=None, comp_name=None):
-    legend = ["Ground Pii", "Ground PCR", name + " Pii", name + " PCR"]
+def plot_fit_and_ground(pred, ground, title, name, comparison=None, comp_name=None):
+    legend = ["Ground Pi", "Ground PCR", name + " Pi", name + " PCR"]
 
     if len(pred.shape) == 3:
         pred = pred.reshape(301, 2)
@@ -42,7 +50,20 @@ def plot_ground_pcr_pii(pred, ground, title, name, comparison=None, comp_name=No
 
     if comparison is not None:
         plt.plot(comparison)
-        legend.extend([comp_name + " Pii", comp_name + " PCR"])
+        legend.extend([comp_name + " Pi", comp_name + " PCR"])
+
+    plt.title(title)
+    plt.legend(legend)
+    plt.xlabel("Time")
+    plt.ylabel("Relative concentration")
+
+    plt.show()
+
+
+def plot_ground(ground, title):
+    legend = ["Ground Pi", "Ground PCR"]
+
+    plt.plot(ground)
 
     plt.title(title)
     plt.legend(legend)
